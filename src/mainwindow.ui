@@ -10,6 +10,12 @@
     <height>550</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>200</width>
+    <height>200</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -66,9 +72,9 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>10</y>
+      <y>30</y>
       <width>681</width>
-      <height>481</height>
+      <height>461</height>
      </rect>
     </property>
    </widget>
@@ -76,7 +82,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>200</y>
+      <y>450</y>
       <width>21</width>
       <height>23</height>
      </rect>
@@ -92,7 +98,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>220</y>
+      <y>470</y>
       <width>21</width>
       <height>23</height>
      </rect>
@@ -120,6 +126,42 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QSpinBox" name="penSize">
+    <property name="geometry">
+     <rect>
+      <x>581</x>
+      <y>0</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="penShadow">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>0</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Shadow</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="penColor">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>0</y>
+      <width>21</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
@@ -139,10 +181,15 @@
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
     <addaction name="actionRGB"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
   </widget>
   <action name="actionSave">
    <property name="text">

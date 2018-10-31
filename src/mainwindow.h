@@ -23,8 +23,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
     void allCheckFalse();
+    void Image_RGB_Change(int slider_r, int slider_g, int slider_b);
+    void setColorStyle(int slider_r, int slider_g, int slider_b);
     QPixmap pixmap;
     paintScene *scene;
 
@@ -33,6 +34,7 @@ private:
     QString fileLink;
     QGraphicsPixmapItem *item;
     QPointF PreviousPos;
+    int scaleCount = 0;
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -47,6 +49,8 @@ private slots:
     void on_zoominBtn_clicked();
     void on_dotBtn_clicked();
     void on_actionRGB_triggered();
+    void on_penColor_clicked();
+    void on_penSize_valueChanged(int arg1);
 };
 
 #endif // MAINWINDOW_H

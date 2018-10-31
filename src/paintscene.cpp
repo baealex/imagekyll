@@ -1,11 +1,20 @@
 #include "paintscene.h"
 
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent) {
-
+    mPen.setCapStyle(Qt::RoundCap);
 }
 
 paintScene::~paintScene() {
 
+}
+
+void paintScene::setColor(int r,int g,int b) {
+    QBrush brush(QColor(r,g,b));
+    mPen.setBrush(brush);
+}
+
+void paintScene::setPenSize(int size) {
+    mPen.setWidth(size);
 }
 
 void paintScene::setDrawDot(bool temp) {
@@ -50,7 +59,7 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
                     previousPoint.y(),
                     event->scenePos().x(),
                     event->scenePos().y(),
-                    QPen(Qt::red,5,Qt::SolidLine,Qt::RoundCap));
+                    mPen);
         previousPoint = event->scenePos();
     }
 }
@@ -62,13 +71,13 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 previousPoint.y(),
                 event->scenePos().x(),
                 event->scenePos().y(),
-                QPen(Qt::red,5,Qt::SolidLine,Qt::RoundCap));
+                mPen);
     }
     if(DrawSqure) {
         addRect(previousPoint.x(),
                 previousPoint.y(),
                 event->scenePos().x()-previousPoint.x(),
                 event->scenePos().y()-previousPoint.y(),
-                QPen(Qt::red,5,Qt::SolidLine,Qt::RoundCap));
+                mPen);
     }
 }

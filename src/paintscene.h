@@ -14,6 +14,8 @@ public:
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
 
+    void setColor(int r,int g,int b);
+    void setPenSize(int size);
     void setDrawDot(bool temp);
     void setDrawLine(bool temp);
     void setDrawSqure(bool temp);
@@ -25,6 +27,8 @@ public:
     bool getDrawRound();
 
 private:
+    QPen mPen;
+    int PenSize;
     QPointF previousPoint;
     bool DrawDot;
     bool DrawLine;

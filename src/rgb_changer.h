@@ -13,19 +13,18 @@ class rgb_changer : public QDialog
     Q_OBJECT
 
 public:
-    explicit rgb_changer(MainWindow &ref, QWidget *parent = nullptr);
+    explicit rgb_changer(MainWindow &ref, int Mode, QWidget *parent = nullptr);
     ~rgb_changer();
 
 private slots:
     void on_redSlider_valueChanged(int value);
-
     void on_greenSlider_valueChanged(int value);
-
     void on_blueSlider_valueChanged(int value);
 
 private:
     Ui::rgb_changer *ui;
-    MainWindow &imageRef;
+    MainWindow &mRef;
+    int ModeSelect;
     int rColor;
     int gColor;
     int bColor;

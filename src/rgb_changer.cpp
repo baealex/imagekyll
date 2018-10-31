@@ -3,15 +3,41 @@
 
 #include <QImage>
 
-rgb_changer::rgb_changer(MainWindow &ref, QWidget *parent) :
+rgb_changer::rgb_changer(MainWindow &ref, int Mode, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::rgb_changer),
-    imageRef(ref)
+    mRef(ref),
+    ModeSelect(Mode)
 {
     rColor = 0;
     gColor = 0;
     bColor = 0;
     ui->setupUi(this);
+
+    switch (ModeSelect) {
+    case 0:
+        ui->redSlider->setMaximum(255);
+        ui->redSlider->setMinimum(-255);
+        ui->redSlider->setValue(1);
+        ui->greenSlider->setMaximum(255);
+        ui->greenSlider->setMinimum(-255);
+        ui->greenSlider->setValue(1);
+        ui->blueSlider->setMaximum(255);
+        ui->blueSlider->setMinimum(-255);
+        ui->blueSlider->setValue(1);
+        break;
+    case 1:
+        ui->redSlider->setMaximum(255);
+        ui->redSlider->setMinimum(0);
+        ui->redSlider->setValue(1);
+        ui->greenSlider->setMaximum(255);
+        ui->greenSlider->setMinimum(0);
+        ui->greenSlider->setValue(1);
+        ui->blueSlider->setMaximum(255);
+        ui->blueSlider->setMinimum(0);
+        ui->blueSlider->setValue(1);
+        break;
+    }
 }
 
 rgb_changer::~rgb_changer()
@@ -21,84 +47,36 @@ rgb_changer::~rgb_changer()
 
 void rgb_changer::on_redSlider_valueChanged(int value)
 {
-    QImage image = imageRef.pixmap.toImage();
-    QRgb rgb;
-    int r,g,b;
-    rColor = value;
-    for(int y = 0; y < image.height(); y++)
-    {
-        for(int x = 0 ; x < image.width(); x++)
-        {
-            rgb = image.pixel(x,y);
-            r = qRed(rgb) + rColor;
-            g = qGreen(rgb) + gColor;
-            b = qBlue(rgb) + bColor;
-            if(r < 0) r = 0;
-            else if(r > 255) r = 255;
-            if(g < 0) g = 0;
-            else if(g > 255) g = 255;
-            if(b < 0) b = 0;
-            else if(b > 255) b = 255;
-            image.setPixel(x,y,qRgb(r,g,b));
-        }
+    switch (ModeSelect) {
+    case 0:
+        mRef.Image_RGB_Change(rColor=value, gColor, bColor);
+        break;
+    case 1:
+        mRef.setColorStyle(rColor=value, gColor, bColor);
+        break;
     }
-    QPixmap preview = QPixmap::fromImage(image);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(preview);
-    imageRef.scene->addItem(item);
 }
 
 void rgb_changer::on_greenSlider_valueChanged(int value)
 {
-    QImage image = imageRef.pixmap.toImage();
-    QRgb rgb;
-    int r,g,b;
-    gColor = value;
-    for(int y = 0; y < image.height(); y++)
-    {
-        for(int x = 0 ; x < image.width(); x++)
-        {
-            rgb = image.pixel(x,y);
-            r = qRed(rgb) + rColor;
-            g = qGreen(rgb) + gColor;
-            b = qBlue(rgb) + bColor;
-            if(r < 0) r = 0;
-            else if(r > 255) r = 255;
-            if(g < 0) g = 0;
-            else if(g > 255) g = 255;
-            if(b < 0) b = 0;
-            else if(b > 255) b = 255;
-            image.setPixel(x,y,qRgb(r,g,b));
-        }
+    switch (ModeSelect) {
+        case 0:
+            mRef.Image_RGB_Change(rColor, gColor=value, bColor);
+            break;
+        case 1:
+            mRef.setColorStyle(rColor, gColor=value, bColor);
+            break;
     }
-    QPixmap preview = QPixmap::fromImage(image);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(preview);
-    imageRef.scene->addItem(item);
 }
 
 void rgb_changer::on_blueSlider_valueChanged(int value)
 {
-    QImage image = imageRef.pixmap.toImage();
-    QRgb rgb;
-    int r,g,b;
-    bColor = value;
-    for(int y = 0; y < image.height(); y++)
-    {
-        for(int x = 0 ; x < image.width(); x++)
-        {
-            rgb = image.pixel(x,y);
-            r = qRed(rgb) + rColor;
-            g = qGreen(rgb) + gColor;
-            b = qBlue(rgb) + bColor;
-            if(r < 0) r = 0;
-            else if(r > 255) r = 255;
-            if(g < 0) g = 0;
-            else if(g > 255) g = 255;
-            if(b < 0) b = 0;
-            else if(b > 255) b = 255;
-            image.setPixel(x,y,qRgb(r,g,b));
-        }
+    switch (ModeSelect) {
+        case 0:
+            mRef.Image_RGB_Change(rColor, gColor, bColor=value);
+            break;
+        case 1:
+            mRef.setColorStyle(rColor, gColor, bColor=value);
+            break;
     }
-    QPixmap preview = QPixmap::fromImage(image);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(preview);
-    imageRef.scene->addItem(item);
 }
