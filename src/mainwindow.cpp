@@ -66,6 +66,8 @@ void MainWindow::on_actionSave_as_triggered()
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),pixmap.width(),pixmap.height());
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->resetMatrix();
+    ui->graphicsView->setStyleSheet("border:0px;");
     QPixmap savePixmap = ui->graphicsView->grab();
     savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("JPEG (*.jpg) ;; PNG(*.png)")));
 }
@@ -90,7 +92,7 @@ void MainWindow::on_zoomoutBtn_clicked(){
 }
 
 void MainWindow::on_zoominBtn_clicked(){
-    ui->graphicsView->scale(1.2,1.2);
+    ui->graphicsView->scale(1.25,1.25);
 }
 
 void MainWindow::on_actionRGB_triggered()
