@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>-</string>
+     <string>―</string>
     </property>
     <property name="checkable">
      <bool>true</bool>
@@ -46,7 +46,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>ㅁ</string>
+     <string>□</string>
     </property>
     <property name="checkable">
      <bool>true</bool>
@@ -62,7 +62,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>o</string>
+     <string>○</string>
     </property>
     <property name="checkable">
      <bool>true</bool>

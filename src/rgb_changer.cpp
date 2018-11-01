@@ -3,7 +3,7 @@
 
 #include <QImage>
 
-rgb_changer::rgb_changer(MainWindow &ref, int Mode, QWidget *parent) :
+rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::rgb_changer),
     mRef(ref),
@@ -18,24 +18,29 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, QWidget *parent) :
     case 0:
         ui->redSlider->setMaximum(255);
         ui->redSlider->setMinimum(-255);
-        ui->redSlider->setValue(1);
+        ui->redSlider->setValue(r);
         ui->greenSlider->setMaximum(255);
         ui->greenSlider->setMinimum(-255);
-        ui->greenSlider->setValue(1);
+        ui->greenSlider->setValue(g);
         ui->blueSlider->setMaximum(255);
         ui->blueSlider->setMinimum(-255);
-        ui->blueSlider->setValue(1);
+        ui->blueSlider->setValue(b);
         break;
     case 1:
         ui->redSlider->setMaximum(255);
         ui->redSlider->setMinimum(0);
-        ui->redSlider->setValue(1);
+        ui->redSlider->setValue(r);
         ui->greenSlider->setMaximum(255);
         ui->greenSlider->setMinimum(0);
-        ui->greenSlider->setValue(1);
+        ui->greenSlider->setValue(g);
         ui->blueSlider->setMaximum(255);
         ui->blueSlider->setMinimum(0);
-        ui->blueSlider->setValue(1);
+        ui->blueSlider->setValue(b);
+        break;
+    case 2:
+        // redSlider =
+        // greenSlider =
+        // blueSluder =
         break;
     }
 }

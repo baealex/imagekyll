@@ -12,6 +12,16 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new paintScene(this);
 
     allCheckFalse();
+
+    ui->penSize->setValue(5);
+    setColorStyle(0,0,0);
+    penRed = 0;
+    penGreen = 0;
+    penBlue = 0;
+
+    imgRed = 1;
+    imgGreen = 1;
+    imgBlue = 1;
 }
 
 MainWindow::~MainWindow()
@@ -102,6 +112,7 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
+    scene->clear();
     fileLink = QFileDialog::getOpenFileName(this);
 
     ui->graphicsView->setScene(scene);
@@ -134,15 +145,19 @@ void MainWindow::on_zoominBtn_clicked(){
 
 void MainWindow::on_actionRGB_triggered()
 {
-    rgb_changer rgb(*this, 0, this);
+    rgb_changer rgb(*this, 0, imgRed, imgGreen, imgBlue, this);
     rgb.exec();
 }
 
 void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 {
+    imgRed = slider_r; imgGreen = slider_g; imgBlue = slider_b;
     QImage image = pixmap.toImage();
     int r,g,b;
     QRgb rgb;
+
+    // Need Upgrade Perfomance!!!
+
     for(int y = 0; y < image.height(); y++)
     {
         for(int x = 0 ; x < image.width(); x++)
@@ -167,6 +182,7 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 
 void MainWindow::setColorStyle(int slider_r, int slider_g, int slider_b)
 {
+    penRed = slider_r; penGreen = slider_g; penBlue = slider_b;
     ui->penColor->setStyleSheet("background:rgb("+QString::number(slider_r)+","+QString::number(slider_g)+","+QString::number(slider_b)+")");
     scene->setColor(slider_r,slider_g,slider_b);
 }
@@ -178,6 +194,6 @@ void MainWindow::on_penSize_valueChanged(int arg1)
 
 void MainWindow::on_penColor_clicked()
 {
-    rgb_changer rgb(*this, 1, this);
+    rgb_changer rgb(*this, 1, penRed, penGreen, penBlue, this);
     rgb.exec();
 }

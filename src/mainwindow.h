@@ -36,6 +36,9 @@ private:
     QPointF PreviousPos;
     int scaleCount = 0;
 
+    int imgRed, imgGreen, imgBlue;
+    int penRed, penGreen, penBlue;
+
 protected:
     void resizeEvent(QResizeEvent *event);
 

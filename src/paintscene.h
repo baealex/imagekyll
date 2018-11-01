@@ -5,6 +5,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTimer>
 #include <QDebug>
+#include <QVector>
+#include <QVector2D>
 
 class paintScene : public QGraphicsScene
 {
@@ -14,6 +16,7 @@ public:
     explicit paintScene(QObject *parent = 0);
     ~paintScene();
 
+    void setShadow(bool x);
     void setColor(int r,int g,int b);
     void setPenSize(int size);
     void setDrawDot(bool temp);
@@ -34,6 +37,7 @@ private:
     bool DrawLine;
     bool DrawSqure;
     bool DrawRound;
+    bool Shadow;
 
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);

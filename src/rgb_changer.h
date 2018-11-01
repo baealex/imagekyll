@@ -13,7 +13,7 @@ class rgb_changer : public QDialog
     Q_OBJECT
 
 public:
-    explicit rgb_changer(MainWindow &ref, int Mode, QWidget *parent = nullptr);
+    explicit rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget *parent = nullptr);
     ~rgb_changer();
 
 private slots:
