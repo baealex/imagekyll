@@ -20,6 +20,9 @@ private slots:
     void on_redSlider_valueChanged(int value);
     void on_greenSlider_valueChanged(int value);
     void on_blueSlider_valueChanged(int value);
+    void on_redSlider_sliderReleased();
+    void on_greenSlider_sliderReleased();
+    void on_blueSlider_sliderReleased();
 
 private:
     Ui::rgb_changer *ui;

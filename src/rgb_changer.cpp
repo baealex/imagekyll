@@ -54,7 +54,7 @@ void rgb_changer::on_redSlider_valueChanged(int value)
 {
     switch (ModeSelect) {
     case 0:
-        mRef.Image_RGB_Change(rColor=value, gColor, bColor);
+        mRef.Image_RGB_Preview_Change(rColor=value, gColor, bColor);
         break;
     case 1:
         mRef.setColorStyle(rColor=value, gColor, bColor);
@@ -66,7 +66,7 @@ void rgb_changer::on_greenSlider_valueChanged(int value)
 {
     switch (ModeSelect) {
         case 0:
-            mRef.Image_RGB_Change(rColor, gColor=value, bColor);
+            mRef.Image_RGB_Preview_Change(rColor, gColor=value, bColor);
             break;
         case 1:
             mRef.setColorStyle(rColor, gColor=value, bColor);
@@ -78,10 +78,37 @@ void rgb_changer::on_blueSlider_valueChanged(int value)
 {
     switch (ModeSelect) {
         case 0:
-            mRef.Image_RGB_Change(rColor, gColor, bColor=value);
+            mRef.Image_RGB_Preview_Change(rColor, gColor, bColor=value);
             break;
         case 1:
             mRef.setColorStyle(rColor, gColor, bColor=value);
             break;
+    }
+}
+
+void rgb_changer::on_redSlider_sliderReleased()
+{
+    switch (ModeSelect) {
+    case 0:
+        mRef.Image_RGB_Change(rColor, gColor, bColor);
+        break;
+    }
+}
+
+void rgb_changer::on_greenSlider_sliderReleased()
+{
+    switch (ModeSelect) {
+    case 0:
+        mRef.Image_RGB_Change(rColor, gColor, bColor);
+        break;
+    }
+}
+
+void rgb_changer::on_blueSlider_sliderReleased()
+{
+    switch (ModeSelect) {
+    case 0:
+        mRef.Image_RGB_Change(rColor, gColor, bColor);
+        break;
     }
 }

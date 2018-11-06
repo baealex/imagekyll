@@ -156,8 +156,6 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
     int r,g,b;
     QRgb rgb;
 
-    // Need Upgrade Perfomance!!!
-
     for(int y = 0; y < image.height(); y++)
     {
         for(int x = 0 ; x < image.width(); x++)
@@ -175,8 +173,36 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
             image.setPixel(x,y,qRgb(r,g,b));
         }
     }
-    QPixmap preview = QPixmap::fromImage(image);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(preview);
+    preview = QPixmap::fromImage(image);
+    item->setPixmap(preview);
+    scene->addItem(item);
+}
+
+void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
+{
+    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/2,pixmap.size().height()/2);
+    QImage image = pixmap2.toImage();
+    int r,g,b;
+    QRgb rgb;
+    for(int y = 0; y < image.height(); y++)
+    {
+        for(int x = 0 ; x < image.width(); x++)
+        {
+            rgb = image.pixel(x,y);
+            r = qRed(rgb) + slider_r;
+            g = qGreen(rgb) + slider_g;
+            b = qBlue(rgb) + slider_b;
+            if(r < 0) r = 0;
+            else if(r > 255) r = 255;
+            if(g < 0) g = 0;
+            else if(g > 255) g = 255;
+            if(b < 0) b = 0;
+            else if(b > 255) b = 255;
+            image.setPixel(x,y,qRgb(r,g,b));
+        }
+    }
+    preview = QPixmap::fromImage(image.scaled(image.size().width()*2,image.size().height()*2));
+    item->setPixmap(preview);
     scene->addItem(item);
 }
 

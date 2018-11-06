@@ -25,6 +25,7 @@ public:
     ~MainWindow();
     void allCheckFalse();
     void Image_RGB_Change(int slider_r, int slider_g, int slider_b);
+    void Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b);
     void setColorStyle(int slider_r, int slider_g, int slider_b);
     QPixmap pixmap;
     paintScene *scene;
@@ -34,6 +35,7 @@ private:
     QString fileLink;
     QGraphicsPixmapItem *item;
     QPointF PreviousPos;
+    QPixmap preview;
     int scaleCount = 0;
 
     int imgRed, imgGreen, imgBlue;
