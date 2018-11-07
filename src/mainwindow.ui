@@ -129,30 +129,17 @@
    <widget class="QSpinBox" name="penSize">
     <property name="geometry">
      <rect>
-      <x>581</x>
+      <x>670</x>
       <y>0</y>
       <width>41</width>
       <height>21</height>
      </rect>
     </property>
    </widget>
-   <widget class="QCheckBox" name="penShadow">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>0</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Shadow</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="penColor">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>640</x>
       <y>0</y>
       <width>21</width>
       <height>23</height>

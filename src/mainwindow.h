@@ -38,6 +38,7 @@ private:
     QPixmap preview;
     int scaleCount = 0;
 
+    // SAVE RGB INFOMATION
     int imgRed, imgGreen, imgBlue;
     int penRed, penGreen, penBlue;
 

@@ -61,9 +61,6 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
                     event->scenePos().y(),
                     mPen);
         previousPoint = event->scenePos();
-        /*if(Shadow) {
-            painter->setPen(QPen( QColor(qRgba(0, 10, 20, 50))));
-        }*/
     }
 }
 

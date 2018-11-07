@@ -37,7 +37,6 @@ private:
     bool DrawLine;
     bool DrawSqure;
     bool DrawRound;
-    bool Shadow;
 
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);

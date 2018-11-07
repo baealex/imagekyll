@@ -78,11 +78,12 @@ void MainWindow::on_actionSave_as_triggered()
     heightTemp = ui->graphicsView->geometry().height();
 
     // Initialize Size and Scale
-    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),pixmap.width(),pixmap.height());
+    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),scene->width(),scene->height());
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->resetMatrix();
     ui->graphicsView->setStyleSheet("border:0px;");
+    ui->graphicsView->scroll(0,0);
 
     // Save Image
     QPixmap savePixmap = ui->graphicsView->grab();
@@ -112,6 +113,8 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
+    // 변경된 내용이 있습니다. 정말 저장하지 않으시겠습니까? 추가해야됨!!
+
     scene->clear();
     fileLink = QFileDialog::getOpenFileName(this);
 
@@ -128,9 +131,8 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     ui->zoominBtn->setGeometry(ui->zoominBtn->geometry().x(),this->geometry().height()-100,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
     ui->zoomoutBtn->setGeometry(ui->zoomoutBtn->geometry().x(),this->geometry().height()-80,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
 
-    ui->penColor->setGeometry(this->geometry().width()-160,0,ui->penColor->geometry().width(),ui->penColor->geometry().height());
-    ui->penSize->setGeometry(this->geometry().width()-130,1,ui->penSize->geometry().width(),ui->penSize->geometry().height());
-    ui->penShadow->setGeometry(this->geometry().width()-80,2,ui->penShadow->geometry().width(),ui->penShadow->geometry().height());
+    ui->penColor->setGeometry(this->geometry().width()-85,0,ui->penColor->geometry().width(),ui->penColor->geometry().height());
+    ui->penSize->setGeometry(this->geometry().width()-55,1,ui->penSize->geometry().width(),ui->penSize->geometry().height());
 }
 
 void MainWindow::on_zoomoutBtn_clicked(){
