@@ -126,13 +126,10 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
-    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-40,this->geometry().height()-80);
+    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
 
-    ui->zoominBtn->setGeometry(ui->zoominBtn->geometry().x(),this->geometry().height()-100,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
-    ui->zoomoutBtn->setGeometry(ui->zoomoutBtn->geometry().x(),this->geometry().height()-80,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
-
-    ui->penColor->setGeometry(this->geometry().width()-85,0,ui->penColor->geometry().width(),ui->penColor->geometry().height());
-    ui->penSize->setGeometry(this->geometry().width()-55,1,ui->penSize->geometry().width(),ui->penSize->geometry().height());
+    ui->zoominBtn->setGeometry(this->geometry().width()-60,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
+    ui->zoomoutBtn->setGeometry(this->geometry().width()-30,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
 }
 
 void MainWindow::on_zoomoutBtn_clicked(){
@@ -182,7 +179,7 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
 {
-    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/2,pixmap.size().height()/2);
+    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/3,pixmap.size().height()/3);
     QImage image = pixmap2.toImage();
     int r,g,b;
     QRgb rgb;
@@ -203,7 +200,7 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
             image.setPixel(x,y,qRgb(r,g,b));
         }
     }
-    preview = QPixmap::fromImage(image.scaled(image.size().width()*2,image.size().height()*2));
+    preview = QPixmap::fromImage(image.scaled(image.size().width()*3,image.size().height()*3));
     item->setPixmap(preview);
     scene->addItem(item);
 }

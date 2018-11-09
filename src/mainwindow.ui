@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>728</width>
+    <width>730</width>
     <height>550</height>
    </rect>
   </property>
@@ -17,17 +17,117 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ImageEditor</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+background:#666;
+}
+
+QMenuBar {
+background:#666;
+color:#fff;
+}
+
+QGraphicsView {
+background:#333;
+}
+
+QSpinBox {
+background:#333;
+color:#fff;
+}
+QSpinBox::down-button {
+    subcontrol-origin: border;
+}
+
+QPushButton {
+background:rgba(0,0,0,.0);
+color:#aaa;
+font-weight:bold;
+text-align:center;
+}
+QPushButton:hover {
+color:#ccc;
+}
+QPushButton:pressed {
+color:#fff;
+}
+QPushButton:checked {
+color:#fff;
+}
+
+QScrollBar:horizontal {
+    border: 2px solid grey;
+    background: #333;
+    height: 15px;
+    margin: 0px 20px 0 20px;
+}
+QScrollBar::handle:horizontal {
+    background: white;
+    min-width: 20px;
+}
+QScrollBar::add-line:horizontal {
+    border: 2px solid grey;
+    background: #fff;
+    width: 20px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: 2px solid grey;
+    background: #fff;
+    width: 20px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+ QScrollBar:vertical {
+     border: 2px solid grey;
+     background: #333;
+     width: 15px;
+     margin: 22px 0 22px 0;
+ }
+ QScrollBar::handle:vertical {
+     background: white;
+     min-height: 20px;
+ }
+ QScrollBar::add-line:vertical {
+     border: 2px solid grey;
+     background: #fff;
+     height: 20px;
+     subcontrol-position: bottom;
+     subcontrol-origin: margin;
+ }
+ QScrollBar::sub-line:vertical {
+     border: 2px solid grey;
+     background: #fff;
+     height: 20px;
+     subcontrol-position: top;
+     subcontrol-origin: margin;
+ }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="lineBtn">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>20</y>
-      <width>21</width>
-      <height>23</height>
+      <y>60</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>―</string>
@@ -40,10 +140,16 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>40</y>
-      <width>21</width>
-      <height>23</height>
+      <y>90</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>□</string>
@@ -56,10 +162,16 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>60</y>
-      <width>21</width>
-      <height>23</height>
+      <y>120</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>○</string>
@@ -71,20 +183,20 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>29</x>
       <y>30</y>
-      <width>681</width>
-      <height>461</height>
+      <width>702</width>
+      <height>501</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="zoominBtn">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>450</y>
-      <width>21</width>
-      <height>23</height>
+      <x>670</x>
+      <y>0</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -97,10 +209,10 @@
    <widget class="QPushButton" name="zoomoutBtn">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>470</y>
-      <width>21</width>
-      <height>23</height>
+      <x>700</x>
+      <y>0</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -114,10 +226,16 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
-      <width>21</width>
-      <height>23</height>
+      <y>30</y>
+      <width>30</width>
+      <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>.</string>
@@ -129,20 +247,20 @@
    <widget class="QSpinBox" name="penSize">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>0</y>
-      <width>41</width>
-      <height>21</height>
+      <x>30</x>
+      <y>3</y>
+      <width>50</width>
+      <height>25</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="penColor">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>0</y>
-      <width>21</width>
-      <height>23</height>
+      <x>90</x>
+      <y>3</y>
+      <width>25</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="text">
@@ -150,13 +268,12 @@
     </property>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>728</width>
+     <width>730</width>
      <height>21</height>
     </rect>
    </property>

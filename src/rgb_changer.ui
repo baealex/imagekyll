@@ -6,12 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>249</width>
+    <width>260</width>
     <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+background: #333;
+}
+
+QSlider::handle:horizontal {
+    background: #fff;
+    border: 1px solid #5c5c5c;
+    width: 18px;
+    margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 3px;
+}</string>
   </property>
   <widget class="QSlider" name="redSlider">
    <property name="geometry">

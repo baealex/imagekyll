@@ -9,6 +9,8 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
     mRef(ref),
     ModeSelect(Mode)
 {
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     rColor = 0;
     gColor = 0;
     bColor = 0;
@@ -16,26 +18,34 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
 
     switch (ModeSelect) {
     case 0:
+        setWindowTitle("Image RGB");
         ui->redSlider->setMaximum(255);
         ui->redSlider->setMinimum(-255);
         ui->redSlider->setValue(r);
+        ui->redSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255)); margin: 2px 0;}");
         ui->greenSlider->setMaximum(255);
         ui->greenSlider->setMinimum(-255);
         ui->greenSlider->setValue(g);
+        ui->greenSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 255, 0, 255)); margin: 2px 0;}");
         ui->blueSlider->setMaximum(255);
         ui->blueSlider->setMinimum(-255);
         ui->blueSlider->setValue(b);
+        ui->blueSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 255, 255)); margin: 2px 0;}");
         break;
     case 1:
+        setWindowTitle("Brush Color");
         ui->redSlider->setMaximum(255);
         ui->redSlider->setMinimum(0);
         ui->redSlider->setValue(r);
+        ui->redSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255)); margin: 2px 0;}");
         ui->greenSlider->setMaximum(255);
         ui->greenSlider->setMinimum(0);
         ui->greenSlider->setValue(g);
+        ui->greenSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 255, 0, 255)); margin: 2px 0;}");
         ui->blueSlider->setMaximum(255);
         ui->blueSlider->setMinimum(0);
         ui->blueSlider->setValue(b);
+        ui->blueSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 255, 255)); margin: 2px 0;}");
         break;
     case 2:
         // redSlider =
