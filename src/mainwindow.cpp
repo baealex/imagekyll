@@ -130,6 +130,8 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
     ui->zoominBtn->setGeometry(this->geometry().width()-60,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
     ui->zoomoutBtn->setGeometry(this->geometry().width()-30,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
+
+    ui->separator->setGeometry(0,0,this->geometry().width(),1);
 }
 
 void MainWindow::on_zoomoutBtn_clicked(){

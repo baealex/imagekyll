@@ -21,20 +21,20 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow {
-background:#666;
+background:#444;
 }
 
 QMenuBar {
-background:#666;
+background:#444;
 color:#fff;
 }
 
 QGraphicsView {
-background:#333;
+background:#222;
 }
 
 QSpinBox {
-background:#333;
+background:#222;
 color:#fff;
 }
 QSpinBox::down-button {
@@ -58,25 +58,25 @@ color:#fff;
 }
 
 QScrollBar:horizontal {
-    border: 2px solid grey;
+    border: 0px solid grey;
     background: #333;
     height: 15px;
-    margin: 0px 20px 0 20px;
+    margin: 0px 22px 0 22px;
 }
 QScrollBar::handle:horizontal {
     background: white;
     min-width: 20px;
 }
 QScrollBar::add-line:horizontal {
-    border: 2px solid grey;
-    background: #fff;
+    border: 0px solid grey;
+    background: #555;
     width: 20px;
     subcontrol-position: right;
     subcontrol-origin: margin;
 }
 QScrollBar::sub-line:horizontal {
-    border: 2px solid grey;
-    background: #fff;
+    border: 0px solid grey;
+    background: #555;
     width: 20px;
     subcontrol-position: left;
     subcontrol-origin: margin;
@@ -86,7 +86,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
  QScrollBar:vertical {
-     border: 2px solid grey;
+     border: 0px solid grey;
      background: #333;
      width: 15px;
      margin: 22px 0 22px 0;
@@ -96,15 +96,15 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
      min-height: 20px;
  }
  QScrollBar::add-line:vertical {
-     border: 2px solid grey;
-     background: #fff;
+     border: 0px solid grey;
+     background: #555;
      height: 20px;
      subcontrol-position: bottom;
      subcontrol-origin: margin;
  }
  QScrollBar::sub-line:vertical {
-     border: 2px solid grey;
-     background: #fff;
+     border: 0px solid grey;
+     background: #555;
      height: 20px;
      subcontrol-position: top;
      subcontrol-origin: margin;
@@ -262,6 +262,22 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
       <width>25</width>
       <height>25</height>
      </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="separator">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>730</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-top : 1px solid #888;</string>
     </property>
     <property name="text">
      <string/>
