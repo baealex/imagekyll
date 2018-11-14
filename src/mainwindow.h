@@ -9,6 +9,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QResizeEvent>
+#include <QMessageBox>
 
 #include "paintscene.h"
 
@@ -32,7 +33,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
     QString fileLink;
+    QFile *file;
+    QString lastWorkDirectory;
+
     QGraphicsPixmapItem *item;
     QPointF PreviousPos;
     QPixmap preview;

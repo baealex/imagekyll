@@ -9,7 +9,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     new QShortcut(QKeySequence(Qt::SHIFT + Qt::CTRL + Qt::Key_S), this, SLOT(on_actionSave_as_triggered()));
+
     scene = new paintScene(this);
+    ui->graphicsView->setScene(scene);
 
     allCheckFalse();
 
@@ -22,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     imgRed = 1;
     imgGreen = 1;
     imgBlue = 1;
+
+    file = new QFile("LastWorkStation.txt");
 }
 
 MainWindow::~MainWindow()
@@ -87,7 +91,7 @@ void MainWindow::on_actionSave_as_triggered()
 
     // Save Image
     QPixmap savePixmap = ui->graphicsView->grab();
-    savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("JPEG (*.jpg) ;; PNG(*.png)")));
+    savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
 
     // Throwed Layout
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),widthTemp,heightTemp);
@@ -113,16 +117,46 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    // 변경된 내용이 있습니다. 정말 저장하지 않으시겠습니까? 추가해야됨!!
-
+    if(scene->runEdit)
+    {
+        int Answer = QMessageBox::question(this,
+                                           "Really?",
+                                           "Are you sure you want to erase this image and open a new file?",
+                                           QMessageBox::Yes | QMessageBox::No);
+        switch (Answer) {
+        case QMessageBox::Yes :
+            break;
+        case QMessageBox::No :
+            return;
+        }
+    }
     scene->clear();
-    fileLink = QFileDialog::getOpenFileName(this);
 
-    ui->graphicsView->setScene(scene);
+    if(file->open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        file->open(QIODevice::ReadOnly);
+        QTextStream in(file);
+        in.setCodec("UTF-8");
+        lastWorkDirectory = in.readAll();
+        file->close();
+        fileLink = QFileDialog::getOpenFileName(this,"",lastWorkDirectory);
+    }
+    else
+    {
+        fileLink = QFileDialog::getOpenFileName(this);
+    }
+
+    file->open(QIODevice::WriteOnly);
+    QTextStream out(file);
+    out.setCodec("UTF-8");
+    out << fileLink;
+    file->close();
 
     pixmap.load(fileLink);
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
+
+    scene->runEdit = false;
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
@@ -152,6 +186,7 @@ void MainWindow::on_actionRGB_triggered()
 
 void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 {
+    scene->runEdit = true;
     imgRed = slider_r; imgGreen = slider_g; imgBlue = slider_b;
     QImage image = pixmap.toImage();
     int r,g,b;

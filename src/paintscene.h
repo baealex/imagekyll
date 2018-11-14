@@ -29,6 +29,8 @@ public:
     bool getDrawSqure();
     bool getDrawRound();
 
+    bool runEdit = false;
+
 private:
     QPen mPen;
     int PenSize;

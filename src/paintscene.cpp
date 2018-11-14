@@ -50,6 +50,7 @@ bool paintScene::getDrawSqure() {
 }
 
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent * event){
+    runEdit = true;
     previousPoint = event->scenePos();
 }
 
@@ -79,5 +80,12 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 event->scenePos().x()-previousPoint.x(),
                 event->scenePos().y()-previousPoint.y(),
                 mPen);
+    }
+    if(DrawRound) {
+        addEllipse(previousPoint.x(),
+                   previousPoint.y(),
+                   event->scenePos().x()-previousPoint.x(),
+                   event->scenePos().y()-previousPoint.y(),
+                   mPen);
     }
 }
