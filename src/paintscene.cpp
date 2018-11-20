@@ -19,6 +19,7 @@ void paintScene::setPenSize(int size) {
 
 void paintScene::setDrawDot(bool temp) {
     DrawDot = temp;
+    DrawDotR = temp;
 }
 
 void paintScene::setDrawLine(bool temp) {
@@ -51,22 +52,28 @@ bool paintScene::getDrawSqure() {
 
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent * event){
     runEdit = true;
+    if(DrawDotR) {
+        DrawDot = true;
+    }
     previousPoint = event->scenePos();
 }
 
 void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
     if(DrawDot) {
         addLine(previousPoint.x(),
-                    previousPoint.y(),
-                    event->scenePos().x(),
-                    event->scenePos().y(),
-                    mPen);
+                previousPoint.y(),
+                event->scenePos().x(),
+                event->scenePos().y(),
+                mPen);
         previousPoint = event->scenePos();
     }
 }
 
 void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(DrawDot) {
+        DrawDot = false;
+    }
     if(DrawLine) {
         addLine(previousPoint.x(),
                 previousPoint.y(),

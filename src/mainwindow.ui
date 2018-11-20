@@ -64,7 +64,7 @@ QScrollBar:horizontal {
     margin: 0px 22px 0 22px;
 }
 QScrollBar::handle:horizontal {
-    background: white;
+    background: #666;
     min-width: 20px;
 }
 QScrollBar::add-line:horizontal {
@@ -92,7 +92,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
      margin: 22px 0 22px 0;
  }
  QScrollBar::handle:vertical {
-     background: white;
+     background: #666;
      min-height: 20px;
  }
  QScrollBar::add-line:vertical {

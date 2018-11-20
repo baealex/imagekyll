@@ -36,6 +36,7 @@ private:
     int PenSize;
     QPointF previousPoint;
     bool DrawDot;
+    bool DrawDotR;
     bool DrawLine;
     bool DrawSqure;
     bool DrawRound;
