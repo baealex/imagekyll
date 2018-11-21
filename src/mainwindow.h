@@ -47,8 +47,14 @@ private:
     int imgRed, imgGreen, imgBlue;
     int penRed, penGreen, penBlue;
 
+    bool Crop;
+    QPointF previousPoint;
+
 protected:
     void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
     void on_lineBtn_clicked();
@@ -62,6 +68,7 @@ private slots:
     void on_actionRGB_triggered();
     void on_penColor_clicked();
     void on_penSize_valueChanged(int arg1);
+    void on_cropBtn_clicked();
 };
 
 #endif // MAINWINDOW_H

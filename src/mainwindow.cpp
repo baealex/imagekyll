@@ -67,11 +67,13 @@ void MainWindow::allCheckFalse()
     ui->lineBtn->setChecked(false);
     ui->squreBtn->setChecked(false);
     ui->roundBtn->setChecked(false);
+    ui->cropBtn->setCheckable(false);
 
     scene->setDrawDot(false);
     scene->setDrawLine(false);
     scene->setDrawSqure(false);
     scene->setDrawRound(false);
+    Crop = false;
 }
 
 void MainWindow::on_actionSave_as_triggered()
@@ -130,7 +132,6 @@ void MainWindow::on_actionOpen_triggered()
             return;
         }
     }
-    scene->clear();
 
     if(file->open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -153,6 +154,10 @@ void MainWindow::on_actionOpen_triggered()
     file->close();
 
     pixmap.load(fileLink);
+
+    scene->clear();
+    ui->graphicsView->setSceneRect(0,0,pixmap.width(),pixmap.height());
+
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
 
@@ -162,8 +167,14 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::resizeEvent(QResizeEvent *event) {
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
 
-    ui->zoominBtn->setGeometry(this->geometry().width()-60,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
-    ui->zoomoutBtn->setGeometry(this->geometry().width()-30,0,ui->zoominBtn->geometry().width(),ui->zoominBtn->geometry().height());
+    if(Crop)
+    {
+        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    }
+
+    ui->zoominBtn->move(this->geometry().width()-60,0);
+    ui->zoomoutBtn->move(this->geometry().width()-30,0);
+    ui->cropBtn->move(0,this->geometry().height()-50);
 
     ui->separator->setGeometry(0,0,this->geometry().width(),1);
 }
@@ -211,7 +222,6 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
     }
     preview = QPixmap::fromImage(image);
     item->setPixmap(preview);
-    scene->addItem(item);
 }
 
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
@@ -239,7 +249,6 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
     }
     preview = QPixmap::fromImage(image.scaled(image.size().width()*3,image.size().height()*3));
     item->setPixmap(preview);
-    scene->addItem(item);
 }
 
 void MainWindow::setColorStyle(int slider_r, int slider_g, int slider_b)
@@ -258,4 +267,50 @@ void MainWindow::on_penColor_clicked()
 {
     rgb_changer rgb(*this, 1, penRed, penGreen, penBlue, this);
     rgb.exec();
+}
+
+void MainWindow::on_cropBtn_clicked()
+{
+    allCheckFalse();
+    ui->cropBtn->setChecked(true);
+    Crop = true;
+    ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
+    ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    if(Crop) {
+        previousPoint = event->localPos();
+        ui->cropLabel->setStyleSheet("border: 3px solid red;");
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+    if(Crop) {
+        ui->cropLabel->setGeometry(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y());
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+    if(Crop) {
+        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
+        ui->cropLabel->setStyleSheet("border: 0px solid red;");
+        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        pixmap = ui->graphicsView->grab(QRect(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y()));
+
+        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        ui->maskLabel->setGeometry(0,0,0,0);
+        ui->cropLabel->setGeometry(0,0,0,0);
+
+        scene->clear();
+        ui->graphicsView->setSceneRect(0,0,pixmap.width(),pixmap.height());
+
+        item = new QGraphicsPixmapItem(pixmap);
+        scene->addItem(item);
+
+        Crop = false;
+    }
 }

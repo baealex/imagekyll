@@ -48,7 +48,7 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
         ui->blueSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 255, 255)); margin: 2px 0;}");
         break;
     case 2:
-        // redSlider =
+
         // greenSlider =
         // blueSluder =
         break;
