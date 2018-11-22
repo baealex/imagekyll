@@ -5,8 +5,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTimer>
 #include <QDebug>
-#include <QVector>
-#include <QVector2D>
 
 class paintScene : public QGraphicsScene
 {
@@ -35,6 +33,7 @@ private:
     QPen mPen;
     int PenSize;
     QPointF previousPoint;
+
     bool DrawDot;
     bool DrawDotR;
     bool DrawLine;

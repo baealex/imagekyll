@@ -26,33 +26,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_dotBtn_clicked()
-{
-    allCheckFalse();
-    ui->dotBtn->setChecked(true);
-    scene->setDrawDot(true);
-}
-
-void MainWindow::on_lineBtn_clicked()
-{
-    allCheckFalse();
-    ui->lineBtn->setChecked(true);
-    scene->setDrawLine(true);
-}
-
-void MainWindow::on_squreBtn_clicked()
-{
-    allCheckFalse();
-    ui->squreBtn->setChecked(true);
-    scene->setDrawSqure(true);
-}
-
-void MainWindow::on_roundBtn_clicked()
-{
-    allCheckFalse();
-    ui->roundBtn->setChecked(true);
-    scene->setDrawRound(true);
-}
+/*
+ *
+ * MY FUNCTION
+ *
+ */
 
 void MainWindow::allCheckFalse()
 {
@@ -67,14 +45,12 @@ void MainWindow::allCheckFalse()
     scene->setDrawRound(false);
 }
 
-void MainWindow::on_actionSave_as_triggered()
+QPixmap MainWindow::scanImage()
 {
-    // Backup Size
     int widthTemp, heightTemp;
     widthTemp = ui->graphicsView->geometry().width();
     heightTemp = ui->graphicsView->geometry().height();
 
-    // Initialize Size and Scale
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),scene->width(),scene->height());
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -82,11 +58,8 @@ void MainWindow::on_actionSave_as_triggered()
     ui->graphicsView->setStyleSheet("border:0px;");
     ui->graphicsView->scroll(0,0);
 
-    // Save Image
-    QPixmap savePixmap = ui->graphicsView->grab();
-    savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
+    QPixmap temp = ui->graphicsView->grab();
 
-    // Throwed Layout
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),widthTemp,heightTemp);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -106,6 +79,20 @@ void MainWindow::on_actionSave_as_triggered()
             ui->graphicsView->scale(0.8,0.8);
         scaleCount *= -1;
     }
+
+    return temp;
+}
+
+/*
+ *
+ * MENU OPTION
+ *
+ */
+
+void MainWindow::on_actionSave_as_triggered()
+{
+    QPixmap savePixmap = scanImage();
+    savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -163,20 +150,11 @@ void MainWindow::on_actionOpen_triggered()
     scene->runEdit = false;
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event) {
-    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
-
-    if(Crop)
-    {
-        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
-    }
-
-    ui->zoominBtn->move(this->geometry().width()-60,0);
-    ui->zoomoutBtn->move(this->geometry().width()-30,0);
-    ui->cropBtn->move(0,this->geometry().height()-50);
-
-    ui->separator->setGeometry(0,0,this->geometry().width(),1);
-}
+/*
+ *
+ * BUTTON
+ *
+ */
 
 void MainWindow::on_zoomoutBtn_clicked(){
     ui->graphicsView->scale(0.8,0.8);
@@ -187,6 +165,58 @@ void MainWindow::on_zoominBtn_clicked(){
     ui->graphicsView->scale(1.25,1.25);
     scaleCount++;
 }
+
+void MainWindow::on_cropBtn_clicked()
+{
+    allCheckFalse();
+    if(!Crop) {
+        Crop = true;
+        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
+        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    }
+    else {
+        Crop = false;
+        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
+        ui->cropLabel->setStyleSheet("border: 0px solid red;");
+        ui->maskLabel->setGeometry(0,0,0,0);
+        ui->cropLabel->setGeometry(0,0,0,0);
+    }
+    ui->cropBtn->setChecked(Crop);
+}
+
+void MainWindow::on_dotBtn_clicked()
+{
+    allCheckFalse();
+    ui->dotBtn->setChecked(true);
+    scene->setDrawDot(true);
+}
+
+void MainWindow::on_lineBtn_clicked()
+{
+    allCheckFalse();
+    ui->lineBtn->setChecked(true);
+    scene->setDrawLine(true);
+}
+
+void MainWindow::on_squreBtn_clicked()
+{
+    allCheckFalse();
+    ui->squreBtn->setChecked(true);
+    scene->setDrawSqure(true);
+}
+
+void MainWindow::on_roundBtn_clicked()
+{
+    allCheckFalse();
+    ui->roundBtn->setChecked(true);
+    scene->setDrawRound(true);
+}
+
+/*
+ *
+ * RGB CHANGE
+ *
+ */
 
 void MainWindow::on_actionRGB_triggered()
 {
@@ -250,6 +280,13 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
     item->setPixmap(preview);
 }
 
+/*
+ *
+ * PEN CUSTOM
+ *
+ */
+
+
 void MainWindow::setColorStyle(int slider_r, int slider_g, int slider_b)
 {
     penRed = slider_r; penGreen = slider_g; penBlue = slider_b;
@@ -268,23 +305,11 @@ void MainWindow::on_penColor_clicked()
     rgb.exec();
 }
 
-void MainWindow::on_cropBtn_clicked()
-{
-    allCheckFalse();
-    if(!Crop) {
-        Crop = true;
-        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
-        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
-    }
-    else {
-        Crop = false;
-        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
-        ui->cropLabel->setStyleSheet("border: 0px solid red;");
-        ui->maskLabel->setGeometry(0,0,0,0);
-        ui->cropLabel->setGeometry(0,0,0,0);
-    }
-    ui->cropBtn->setChecked(Crop);
-}
+/*
+ *
+ * EVENT
+ *
+ */
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     if(Crop) {
@@ -323,4 +348,19 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
 
         Crop = false;
     }
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+
+    if(Crop)
+    {
+        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    }
+
+    ui->zoominBtn->move(this->geometry().width()-60,0);
+    ui->zoomoutBtn->move(this->geometry().width()-30,0);
+    ui->cropBtn->move(0,this->geometry().height()-50);
+
+    ui->separator->setGeometry(0,0,this->geometry().width(),1);
 }

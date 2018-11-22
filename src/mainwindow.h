@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#define UNDO_SIZE 10
+
 #include <QMainWindow>
 #include <QPixmap>
 #include <QPainter>
@@ -28,11 +30,12 @@ public:
     void Image_RGB_Change(int slider_r, int slider_g, int slider_b);
     void Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b);
     void setColorStyle(int slider_r, int slider_g, int slider_b);
-    QPixmap pixmap;
-    paintScene *scene;
+    QPixmap scanImage();
 
 private:
     Ui::MainWindow *ui;
+    QPixmap pixmap;
+    paintScene *scene;
 
     QString fileLink;
     QFile *file;
