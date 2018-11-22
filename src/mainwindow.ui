@@ -24,9 +24,39 @@
 background:#444;
 }
 
+QMessageBox {
+background:#444;
+}
+
+QMessageBox QLabel {
+    color: #fff;
+}
+
 QMenuBar {
 background:#444;
 color:#fff;
+}
+
+QMenuBar::item:selected {
+    background: #555;
+}
+
+QMenuBar::item:pressed {
+    background: #777;
+}
+
+QMenu {
+	color: #fff;
+    background-color: #333;
+    border: 1px solid black;
+}
+
+QMenu::item {
+    background-color: transparent;
+}
+
+QMenu::item:selected {
+    background-color: #555;
 }
 
 QGraphicsView {
@@ -338,7 +368,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <x>0</x>
      <y>0</y>
      <width>730</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
