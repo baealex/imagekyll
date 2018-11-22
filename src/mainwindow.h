@@ -47,7 +47,7 @@ private:
     int imgRed, imgGreen, imgBlue;
     int penRed, penGreen, penBlue;
 
-    bool Crop;
+    bool Crop = false;
     QPointF previousPoint;
 
 protected:

@@ -13,17 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new paintScene(this);
     ui->graphicsView->setScene(scene);
 
-    allCheckFalse();
-
     ui->penSize->setValue(5);
     setColorStyle(0,0,0);
-    penRed = 0;
-    penGreen = 0;
-    penBlue = 0;
 
-    imgRed = 1;
-    imgGreen = 1;
-    imgBlue = 1;
+    allCheckFalse();
 
     file = new QFile("LastWorkStation.txt");
 }
@@ -67,13 +60,11 @@ void MainWindow::allCheckFalse()
     ui->lineBtn->setChecked(false);
     ui->squreBtn->setChecked(false);
     ui->roundBtn->setChecked(false);
-    ui->cropBtn->setCheckable(false);
 
     scene->setDrawDot(false);
     scene->setDrawLine(false);
     scene->setDrawSqure(false);
     scene->setDrawRound(false);
-    Crop = false;
 }
 
 void MainWindow::on_actionSave_as_triggered()
@@ -155,8 +146,16 @@ void MainWindow::on_actionOpen_triggered()
 
     pixmap.load(fileLink);
 
-    scene->clear();
-    ui->graphicsView->setSceneRect(0,0,pixmap.width(),pixmap.height());
+    scene = new paintScene(this);
+    ui->graphicsView->setScene(scene);
+
+    scene->setPenSize(ui->penSize->value());
+    scene->setColor(penRed, penGreen, penBlue);
+    allCheckFalse();
+
+    imgRed = 1;
+    imgGreen = 1;
+    imgBlue = 1;
 
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
@@ -272,10 +271,19 @@ void MainWindow::on_penColor_clicked()
 void MainWindow::on_cropBtn_clicked()
 {
     allCheckFalse();
-    ui->cropBtn->setChecked(true);
-    Crop = true;
-    ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
-    ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    if(!Crop) {
+        Crop = true;
+        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
+        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    }
+    else {
+        Crop = false;
+        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
+        ui->cropLabel->setStyleSheet("border: 0px solid red;");
+        ui->maskLabel->setGeometry(0,0,0,0);
+        ui->cropLabel->setGeometry(0,0,0,0);
+    }
+    ui->cropBtn->setChecked(Crop);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
@@ -300,13 +308,15 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
 
         pixmap = ui->graphicsView->grab(QRect(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y()));
 
+        ui->graphicsView->resetMatrix();
+        scaleCount = 0;
         ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         ui->maskLabel->setGeometry(0,0,0,0);
         ui->cropLabel->setGeometry(0,0,0,0);
 
-        scene->clear();
-        ui->graphicsView->setSceneRect(0,0,pixmap.width(),pixmap.height());
+        scene = new paintScene(this);
+        ui->graphicsView->setScene(scene);
 
         item = new QGraphicsPixmapItem(pixmap);
         scene->addItem(item);
