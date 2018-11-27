@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "rgb_changer.h"
+#include "option.h"
+#include "image_resizer.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -132,6 +135,9 @@ void MainWindow::on_actionOpen_triggered()
     file->close();
 
     pixmap.load(fileLink);
+    if(pixmap.height() > pixmap.width()) {
+        PreviewSize = pixmap.height() / 1080;
+    } else { PreviewSize = pixmap.width() / 1080; }
 
     scene = new paintScene(this);
     ui->graphicsView->setScene(scene);
@@ -148,6 +154,16 @@ void MainWindow::on_actionOpen_triggered()
     scene->addItem(item);
 
     scene->runEdit = false;
+}
+
+void MainWindow::on_actionResizing_triggered()
+{
+    image_resizer resizer(*this, pixmap.width(), pixmap.height(), this);
+    resizer.exec();
+}
+
+void MainWindow::on_actionSetting_triggered()
+{
 }
 
 /*
@@ -255,7 +271,7 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
 {
-    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/3,pixmap.size().height()/3);
+    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/PreviewSize,pixmap.size().height()/PreviewSize);
     QImage image = pixmap2.toImage();
     int r,g,b;
     QRgb rgb;
@@ -276,7 +292,26 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
             image.setPixel(x,y,qRgb(r,g,b));
         }
     }
-    preview = QPixmap::fromImage(image.scaled(image.size().width()*3,image.size().height()*3));
+    preview = QPixmap::fromImage(image.scaled(image.size().width()*PreviewSize,image.size().height()*PreviewSize));
+    item->setPixmap(preview);
+}
+
+void MainWindow::Image_Hue_Change()
+{
+    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width(),pixmap.size().height());
+    QImage image = pixmap2.toImage();
+    for(int i=0; i<image.width(); i++)
+    {
+        for(int j=0; j<image.height(); j++)
+        {
+            QColor color = image.pixelColor(i,j);
+
+            int hue = color.hue();
+            color.setHsv(hue, color.saturation(), color.value(), color.alpha());
+            image.setPixelColor(i, j, color);
+        }
+    }
+    preview = QPixmap::fromImage(image.scaled(image.size().width(),image.size().height()));
     item->setPixmap(preview);
 }
 
@@ -303,6 +338,23 @@ void MainWindow::on_penColor_clicked()
 {
     rgb_changer rgb(*this, 1, penRed, penGreen, penBlue, this);
     rgb.exec();
+}
+
+/*
+ *
+ * IMAGE SIZE
+ *
+ */
+
+void MainWindow::Image_Size_Change(int w, int h)
+{
+    pixmap = pixmap.scaled(w,h);
+
+    scene = new paintScene(this);
+    ui->graphicsView->setScene(scene);
+
+    item = new QGraphicsPixmapItem(pixmap);
+    scene->addItem(item);
 }
 
 /*

@@ -1,14 +1,88 @@
 #include "image_resizer.h"
 #include "ui_image_resizer.h"
 
-image_resizer::image_resizer(QWidget *parent) :
+image_resizer::image_resizer(MainWindow &ref, int w, int h, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::image_resizer)
-{
+    ui(new Ui::image_resizer),
+    mRef(ref)
+    {
     ui->setupUi(this);
+
+    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+    setWindowTitle("Image Resize");
+
+    ui->spinWidth->setValue(w);
+    ui->spinHeight->setValue(h);
+
+    __Width = w;
+    __Height = h;
+
+    int x = gdc(w,h);
+    mWidth = w/x;
+    mHeight = h/x;
+
+    ui->checkBox->setChecked(true);
+}
+
+int image_resizer::gdc(int a, int b)
+{
+    int temp = 0;
+
+    int i, j=(a<b)?a:b;
+    for(i=1; i<=j; i++) {
+        if(a%i==0 && b%i==0) {
+            temp=i;
+        }
+    }
+
+    return temp;
 }
 
 image_resizer::~image_resizer()
 {
     delete ui;
+}
+
+void image_resizer::on_spinWidth_valueChanged(int arg1)
+{
+    if(checkRatio && !changeValue)
+    {
+        changeValue = true;
+        ui->spinHeight->setValue(mHeight * (int)arg1/mWidth);
+        changeValue = false;
+    }
+}
+
+void image_resizer::on_spinHeight_valueChanged(int arg1)
+{
+    if(checkRatio && !changeValue)
+    {
+        changeValue = true;
+        ui->spinWidth->setValue(mWidth * (int)arg1/mHeight);
+        changeValue = false;
+    }
+}
+
+void image_resizer::on_checkBox_stateChanged(int arg1)
+{
+    if(checkRatio)
+    {
+        checkRatio = false;
+    }
+    else
+    {
+        checkRatio = true;
+    }
+}
+
+void image_resizer::on_pushButton_clicked()
+{
+    mRef.Image_Size_Change(ui->spinWidth->text().toInt(),
+                           ui->spinHeight->text().toInt());
+}
+
+void image_resizer::on_pushButton_2_clicked()
+{
+    close();
 }

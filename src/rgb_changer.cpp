@@ -49,8 +49,6 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
         break;
     case 2:
 
-        // greenSlider =
-        // blueSluder =
         break;
     }
 }

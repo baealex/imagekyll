@@ -28,18 +28,21 @@ SOURCES += \
         mainwindow.cpp \
     paintscene.cpp \
     rgb_changer.cpp \
-    image_resizer.cpp
+    image_resizer.cpp \
+    option.cpp
 
 HEADERS += \
         mainwindow.h \
     paintscene.h \
     rgb_changer.h \
-    image_resizer.h
+    image_resizer.h \
+    option.h
 
 FORMS += \
         mainwindow.ui \
     rgb_changer.ui \
-    image_resizer.ui
+    image_resizer.ui \
+    option.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
