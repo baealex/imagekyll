@@ -9,7 +9,8 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
     mRef(ref),
     ModeSelect(Mode)
 {
-    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     rColor = 0;
     gColor = 0;

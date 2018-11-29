@@ -32,6 +32,8 @@ public:
     void Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b);
     void setColorStyle(int slider_r, int slider_g, int slider_b);
     void Image_Hue_Change();
+    void ThemeSelect(int arg1);
+    void SetPreviewSize(int arg1);
     QPixmap scanImage();
 
 private:
@@ -47,13 +49,14 @@ private:
     QPointF PreviousPos;
     QPixmap preview;
     int scaleCount = 0;
-    int PreviewSize = 0;
+    int PreviewSize = 1080;
 
     // SAVE RGB INFOMATION
     int imgRed, imgGreen, imgBlue;
     int penRed, penGreen, penBlue;
 
     bool Crop = false;
+    bool OpenImage = false;
     QPointF previousPoint;
 
 protected:
@@ -76,7 +79,10 @@ private slots:
     void on_penSize_valueChanged(int arg1);
     void on_cropBtn_clicked();
     void on_actionResizing_triggered();
-    void on_actionSetting_triggered();
+    void ShowContextMenu(const QPoint& pos);
+    void on_actionSave_triggered();
+    void on_actionOption_triggered();
+    void on_actionInfo_triggered();
 };
 
 #endif // MAINWINDOW_H

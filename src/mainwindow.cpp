@@ -2,8 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include "rgb_changer.h"
-#include "option.h"
 #include "image_resizer.h"
+#include "option.h"
+#include "infomation.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,17 +12,50 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    new QShortcut(QKeySequence(Qt::SHIFT + Qt::CTRL + Qt::Key_S), this, SLOT(on_actionSave_as_triggered()));
+    ThemeSelect(1);
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
+
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O), this, SLOT(on_actionOpen_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, SLOT(on_actionSave_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S), this, SLOT(on_actionSave_as_triggered()));
+
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C), this, SLOT(on_actionRGB_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_R), this, SLOT(on_actionResizing_triggered()));
+
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O), this, SLOT(on_actionOption_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(on_actionInfo_triggered()));
 
     scene = new paintScene(this);
-    ui->graphicsView->setScene(scene);
 
+    ui->graphicsView->setScene(scene);
     ui->penSize->setValue(5);
     setColorStyle(0,0,0);
 
     allCheckFalse();
 
     file = new QFile("LastWorkStation.txt");
+}
+
+void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
+{
+    QPoint globalPos = this->mapToGlobal(pos);
+
+    QMenu myMenu;
+    myMenu.setStyleSheet("QMenu {color: #fff;background-color: #333;border: 1px solid black;} QMenu::item {background-color: transparent;} QMenu::item:selected {background-color: #555;}");
+    myMenu.addAction("Open (Ctrl + O)", this, SLOT(on_actionOpen_triggered()));
+    myMenu.addAction("Save (Ctrl + S)", this, SLOT(on_actionSave_triggered()));
+    myMenu.addAction("Save as (Ctrl + Shift + S)", this, SLOT(on_actionRGB_triggered()));
+    myMenu.addSeparator();
+    myMenu.addAction("RGB (Ctrl + C)", this, SLOT(on_actionRGB_triggered()));
+    myMenu.addAction("Resize (Ctrl + R)", this, SLOT(on_actionResizing_triggered()));
+    myMenu.addSeparator();
+    myMenu.addAction("Option (Ctrl + Alt + O)", this, SLOT(on_actionOption_triggered()));
+    myMenu.addAction("Infomation (F10)", this, SLOT(on_actionInfo_triggered()));
+
+    QAction* selectedItem = myMenu.exec(globalPos);
+    Q_UNUSED(selectedItem);
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +68,26 @@ MainWindow::~MainWindow()
  * MY FUNCTION
  *
  */
+
+void MainWindow::SetPreviewSize(int arg1)
+{
+    PreviewSize = arg1;
+}
+
+void MainWindow::ThemeSelect(int arg1)
+{
+    switch (arg1) {
+    case 1:
+        this->setStyleSheet("QMainWindow { background:#444; } QMessageBox { background:#444; } QMessageBox QLabel { color: #fff; } QDialog { background: #333; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#444; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#222; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #333; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #666; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #333; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #666; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        break;
+    case 2:
+        this->setStyleSheet("QMainWindow { background:#fff; } QMessageBox { background:#fff; } QMessageBox QLabel { color: #000; } QDialog { background: #fff; } QDialog QLabel{ color:#000; } QDialog QCheckBox{ color:#000; } QSlider::handle:horizontal { background: #000; border: 1px solid #c5c5c5; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#fff; color:#000; } QMenuBar::item:selected { background: #eee; } QMenuBar::item:pressed { background: #ccc; } QMenu { color: #000; background-color: #eee; border: 1px solid white; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #aaa; } QGraphicsView { background:#fff; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#666; } QPushButton:pressed { color:#000; } QPushButton:checked { color:#000; } QScrollBar:horizontal { border: 0px solid darkgrey; background: #ccc; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #fff; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid darkgrey; background: #ccc; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #fff; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        break;
+    case 3:
+        this->setStyleSheet("QMainWindow { background:#400071; } QMessageBox { background:#400071; } QMessageBox QLabel { color: #fff; } QDialog { background: #400071; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#400071; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#300060; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #510082; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #7300a4; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #510082; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #7300a4; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        break;
+    }
+}
 
 void MainWindow::allCheckFalse()
 {
@@ -92,15 +146,39 @@ QPixmap MainWindow::scanImage()
  *
  */
 
+void MainWindow::on_actionSave_triggered()
+{
+    if(OpenImage) {
+        int Answer = QMessageBox::question(this,
+                                           "Really?",
+                                           "Existing images will be erased and overwritten!",
+                                           QMessageBox::Yes | QMessageBox::No);
+        switch (Answer) {
+        case QMessageBox::Yes :
+            break;
+        case QMessageBox::No :
+            return;
+        }
+        QPixmap savePixmap = scanImage();
+        savePixmap.save(fileLink);
+    } else {
+        QMessageBox::information(this, "Please", "The image must be opened first.");
+    }
+}
+
 void MainWindow::on_actionSave_as_triggered()
 {
-    QPixmap savePixmap = scanImage();
-    savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
+    if(OpenImage) {
+        QPixmap savePixmap = scanImage();
+        savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
-    if(scene->runEdit)
+    if(OpenImage && scene->runEdit)
     {
         int Answer = QMessageBox::question(this,
                                            "Really?",
@@ -128,42 +206,45 @@ void MainWindow::on_actionOpen_triggered()
         fileLink = QFileDialog::getOpenFileName(this);
     }
 
-    file->open(QIODevice::WriteOnly);
-    QTextStream out(file);
-    out.setCodec("UTF-8");
-    out << fileLink;
-    file->close();
+    if(fileLink!="") {
+        OpenImage = true;
 
-    pixmap.load(fileLink);
-    if(pixmap.height() > pixmap.width()) {
-        PreviewSize = pixmap.height() / 1080;
-    } else { PreviewSize = pixmap.width() / 1080; }
+        file->open(QIODevice::WriteOnly);
+        QTextStream out(file);
+        out.setCodec("UTF-8");
+        out << fileLink;
+        file->close();
 
-    scene = new paintScene(this);
-    ui->graphicsView->setScene(scene);
+        pixmap.load(fileLink);
 
-    scene->setPenSize(ui->penSize->value());
-    scene->setColor(penRed, penGreen, penBlue);
-    allCheckFalse();
+        scene = new paintScene(this);
+        ui->graphicsView->setScene(scene);
 
-    imgRed = 1;
-    imgGreen = 1;
-    imgBlue = 1;
+        scene->setPenSize(ui->penSize->value());
+        scene->setColor(penRed, penGreen, penBlue);
+        allCheckFalse();
 
-    item = new QGraphicsPixmapItem(pixmap);
-    scene->addItem(item);
+        imgRed = 1;
+        imgGreen = 1;
+        imgBlue = 1;
 
-    scene->runEdit = false;
+        item = new QGraphicsPixmapItem(pixmap);
+        scene->addItem(item);
+
+        scene->runEdit = false;
+    }
 }
 
-void MainWindow::on_actionResizing_triggered()
+void MainWindow::on_actionOption_triggered()
 {
-    image_resizer resizer(*this, pixmap.width(), pixmap.height(), this);
-    resizer.exec();
+    Option op(*this, this);
+    op.exec();
 }
 
-void MainWindow::on_actionSetting_triggered()
+void MainWindow::on_actionInfo_triggered()
 {
+    Infomation info(this);
+    info.exec();
 }
 
 /*
@@ -184,48 +265,72 @@ void MainWindow::on_zoominBtn_clicked(){
 
 void MainWindow::on_cropBtn_clicked()
 {
-    allCheckFalse();
-    if(!Crop) {
-        Crop = true;
-        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
-        ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+    if(OpenImage) {
+        allCheckFalse();
+        if(!Crop) {
+            Crop = true;
+            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
+            ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+        }
+        else {
+            Crop = false;
+            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
+            ui->cropLabel->setStyleSheet("border: 0px solid red;");
+            ui->maskLabel->setGeometry(0,0,0,0);
+            ui->cropLabel->setGeometry(0,0,0,0);
+        }
+        ui->cropBtn->setChecked(Crop);
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
     }
-    else {
-        Crop = false;
-        ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
-        ui->cropLabel->setStyleSheet("border: 0px solid red;");
-        ui->maskLabel->setGeometry(0,0,0,0);
-        ui->cropLabel->setGeometry(0,0,0,0);
-    }
-    ui->cropBtn->setChecked(Crop);
 }
 
 void MainWindow::on_dotBtn_clicked()
 {
-    allCheckFalse();
-    ui->dotBtn->setChecked(true);
-    scene->setDrawDot(true);
+    if(OpenImage) {
+        allCheckFalse();
+        ui->dotBtn->setChecked(true);
+        scene->setDrawDot(true);
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
+
 }
 
 void MainWindow::on_lineBtn_clicked()
 {
-    allCheckFalse();
-    ui->lineBtn->setChecked(true);
-    scene->setDrawLine(true);
+    if(OpenImage) {
+        allCheckFalse();
+        ui->lineBtn->setChecked(true);
+        scene->setDrawLine(true);
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
+
 }
 
 void MainWindow::on_squreBtn_clicked()
 {
-    allCheckFalse();
-    ui->squreBtn->setChecked(true);
-    scene->setDrawSqure(true);
+    if(OpenImage) {
+        allCheckFalse();
+        ui->squreBtn->setChecked(true);
+        scene->setDrawSqure(true);
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
+
 }
 
 void MainWindow::on_roundBtn_clicked()
 {
-    allCheckFalse();
-    ui->roundBtn->setChecked(true);
-    scene->setDrawRound(true);
+    if(OpenImage) {
+        allCheckFalse();
+        ui->roundBtn->setChecked(true);
+        scene->setDrawRound(true);
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
+
 }
 
 /*
@@ -236,8 +341,12 @@ void MainWindow::on_roundBtn_clicked()
 
 void MainWindow::on_actionRGB_triggered()
 {
-    rgb_changer rgb(*this, 0, imgRed, imgGreen, imgBlue, this);
-    rgb.exec();
+    if(OpenImage) {
+        rgb_changer rgb(*this, 0, imgRed, imgGreen, imgBlue, this);
+        rgb.exec();
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
 }
 
 void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
@@ -271,8 +380,9 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
 {
-    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width()/PreviewSize,pixmap.size().height()/PreviewSize);
-    QImage image = pixmap2.toImage();
+    int pre = 1;
+    if(PreviewSize < pixmap.size().height()) pre = pixmap.size().height()/PreviewSize;
+    QImage image = pixmap.scaled(pixmap.size().width()/pre,pixmap.size().height()/pre).toImage();
     int r,g,b;
     QRgb rgb;
     for(int y = 0; y < image.height(); y++)
@@ -292,14 +402,13 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
             image.setPixel(x,y,qRgb(r,g,b));
         }
     }
-    preview = QPixmap::fromImage(image.scaled(image.size().width()*PreviewSize,image.size().height()*PreviewSize));
+    preview = QPixmap::fromImage(image.scaled(image.size().width()*pre,image.size().height()*pre));
     item->setPixmap(preview);
 }
 
 void MainWindow::Image_Hue_Change()
 {
-    QPixmap pixmap2 = pixmap.scaled(pixmap.size().width(),pixmap.size().height());
-    QImage image = pixmap2.toImage();
+    QImage image = pixmap.toImage();
     for(int i=0; i<image.width(); i++)
     {
         for(int j=0; j<image.height(); j++)
@@ -346,12 +455,26 @@ void MainWindow::on_penColor_clicked()
  *
  */
 
+void MainWindow::on_actionResizing_triggered()
+{
+    if(OpenImage) {
+        image_resizer resizer(*this, pixmap.width(), pixmap.height(), this);
+        resizer.exec();
+    } else {
+        QMessageBox::information(this,"Please","The image must be opened first.");
+    }
+}
+
 void MainWindow::Image_Size_Change(int w, int h)
 {
+    pixmap = scanImage();
     pixmap = pixmap.scaled(w,h);
 
     scene = new paintScene(this);
     ui->graphicsView->setScene(scene);
+
+    scene->setPenSize(ui->penSize->value());
+    scene->setColor(penRed, penGreen, penBlue);
 
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
@@ -395,14 +518,19 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
         scene = new paintScene(this);
         ui->graphicsView->setScene(scene);
 
+        scene->setPenSize(ui->penSize->value());
+        scene->setColor(penRed, penGreen, penBlue);
+
         item = new QGraphicsPixmapItem(pixmap);
         scene->addItem(item);
 
+        ui->cropBtn->setChecked(false);
         Crop = false;
     }
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
+    Q_UNUSED(event);
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
 
     if(Crop)

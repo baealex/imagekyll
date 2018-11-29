@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Apply</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
@@ -78,7 +78,7 @@
     <enum>Qt::RightToLeft</enum>
    </property>
    <property name="text">
-    <string>Remain Ratio</string>
+    <string>Keep rates</string>
    </property>
   </widget>
   <widget class="QSpinBox" name="spinWidth">

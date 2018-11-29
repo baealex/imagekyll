@@ -6,9 +6,10 @@ image_resizer::image_resizer(MainWindow &ref, int w, int h, QWidget *parent) :
     ui(new Ui::image_resizer),
     mRef(ref)
     {
-    ui->setupUi(this);
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    ui->setupUi(this);
 
     setWindowTitle("Image Resize");
 
@@ -49,7 +50,7 @@ void image_resizer::on_spinWidth_valueChanged(int arg1)
     if(checkRatio && !changeValue)
     {
         changeValue = true;
-        ui->spinHeight->setValue(mHeight * (int)arg1/mWidth);
+        ui->spinHeight->setValue(mHeight * (int)(arg1/mWidth));
         changeValue = false;
     }
 }
@@ -59,13 +60,14 @@ void image_resizer::on_spinHeight_valueChanged(int arg1)
     if(checkRatio && !changeValue)
     {
         changeValue = true;
-        ui->spinWidth->setValue(mWidth * (int)arg1/mHeight);
+        ui->spinWidth->setValue(mWidth * (int)(arg1/mHeight));
         changeValue = false;
     }
 }
 
 void image_resizer::on_checkBox_stateChanged(int arg1)
 {
+    Q_UNUSED(arg1);
     if(checkRatio)
     {
         checkRatio = false;

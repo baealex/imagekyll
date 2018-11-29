@@ -59,6 +59,7 @@ void paintScene::mousePressEvent(QGraphicsSceneMouseEvent * event){
 }
 
 void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
+
     if(DrawDot) {
         addLine(previousPoint.x(),
                 previousPoint.y(),
@@ -66,6 +67,14 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
                 event->scenePos().y(),
                 mPen);
         previousPoint = event->scenePos();
+    }
+    if(DrawLine) {
+        addLine(previousPoint.x(),
+                previousPoint.y(),
+                event->scenePos().x(),
+                event->scenePos().y(),
+                mPen);
+
     }
 }
 
