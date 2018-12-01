@@ -22,8 +22,9 @@ image_resizer::image_resizer(MainWindow &ref, int w, int h, QWidget *parent) :
     int x = gdc(w,h);
     mWidth = w/x;
     mHeight = h/x;
-
-    ui->checkBox->setChecked(true);
+    if(mRef.config.ResizeRate) {
+        ui->checkBox->setChecked(true);
+    }
 }
 
 int image_resizer::gdc(int a, int b)

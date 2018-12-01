@@ -11,17 +11,20 @@ class Option;
 class Option : public QDialog
 {
     Q_OBJECT
+    bool init;
 
 public:
     explicit Option(MainWindow &ref, QWidget *parent = nullptr);
     ~Option();
 
 private slots:
-    void on_BlackTheme_clicked();
-    void on_WhiteTheme_clicked();
-    void on_PurpleTheme_clicked();
     void on_CloseBtn_clicked();
-    void on_spinBox_valueChanged(int arg1);
+    void on_ThemeBlack_clicked();
+    void on_ThemeWhie_clicked();
+    void on_ThemePurple_clicked();
+    void on_ColorPreviewSize_valueChanged(int arg1);
+    void on_SaveAsk_stateChanged(int arg1);
+    void on_ResizeRate_stateChanged(int arg1);
 
 private:
     Ui::Option *ui;

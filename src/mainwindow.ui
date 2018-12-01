@@ -12,7 +12,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>200</width>
+    <width>400</width>
     <height>200</height>
    </size>
   </property>
@@ -92,7 +92,7 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>29</x>
+      <x>30</x>
       <y>30</y>
       <width>702</width>
       <height>501</height>

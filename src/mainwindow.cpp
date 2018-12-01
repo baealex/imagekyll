@@ -12,7 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ThemeSelect(1);
+    ThemeSelect(config.Theme);
+    this->move(config.PosX, config.PosY);
+    this->setGeometry(config.PosX, config.PosY, config.Width, config.Height);
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
@@ -33,9 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->penSize->setValue(5);
     setColorStyle(0,0,0);
 
-    allCheckFalse();
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    file = new QFile("LastWorkStation.txt");
+    allCheckFalse();
 }
 
 void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
@@ -60,6 +63,11 @@ void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
 
 MainWindow::~MainWindow()
 {
+    config.Width = this->geometry().width();
+    config.Height = this->geometry().height();
+    config.PosX = this->geometry().x();
+    config.PosY = this->geometry().y();
+    config.SAVE();
     delete ui;
 }
 
@@ -69,24 +77,20 @@ MainWindow::~MainWindow()
  *
  */
 
-void MainWindow::SetPreviewSize(int arg1)
-{
-    PreviewSize = arg1;
-}
-
 void MainWindow::ThemeSelect(int arg1)
 {
     switch (arg1) {
     case 1:
-        this->setStyleSheet("QMainWindow { background:#444; } QMessageBox { background:#444; } QMessageBox QLabel { color: #fff; } QDialog { background: #333; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#444; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#222; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #333; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #666; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #333; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #666; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        this->setStyleSheet("QMainWindow { background:#444; } QMessageBox { background:#444; } QMessageBox QLabel { color: #fff; } QDialog { background: #333; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#444; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#222; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #333; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #666; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #333; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #666; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
         break;
     case 2:
-        this->setStyleSheet("QMainWindow { background:#fff; } QMessageBox { background:#fff; } QMessageBox QLabel { color: #000; } QDialog { background: #fff; } QDialog QLabel{ color:#000; } QDialog QCheckBox{ color:#000; } QSlider::handle:horizontal { background: #000; border: 1px solid #c5c5c5; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#fff; color:#000; } QMenuBar::item:selected { background: #eee; } QMenuBar::item:pressed { background: #ccc; } QMenu { color: #000; background-color: #eee; border: 1px solid white; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #aaa; } QGraphicsView { background:#fff; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#666; } QPushButton:pressed { color:#000; } QPushButton:checked { color:#000; } QScrollBar:horizontal { border: 0px solid darkgrey; background: #ccc; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #fff; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid darkgrey; background: #ccc; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #fff; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        this->setStyleSheet("QMainWindow { background:#fff; } QMessageBox { background:#fff; } QMessageBox QLabel { color: #000; } QDialog { background: #fff; } QDialog QLabel{ color:#000; } QDialog QCheckBox{ color:#000; } QSlider::handle:horizontal { background: #000; border: 1px solid #c5c5c5; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#fff; color:#000; } QMenuBar::item:selected { background: #eee; } QMenuBar::item:pressed { background: #ccc; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#eee; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#666; } QPushButton:pressed { color:#000; } QPushButton:checked { color:#000; } QScrollBar:horizontal { border: 0px solid darkgrey; background: #ccc; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #fff; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid darkgrey; background: #ccc; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #fff; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
         break;
     case 3:
-        this->setStyleSheet("QMainWindow { background:#400071; } QMessageBox { background:#400071; } QMessageBox QLabel { color: #fff; } QDialog { background: #400071; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#400071; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#300060; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #510082; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #7300a4; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #510082; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #7300a4; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
+        this->setStyleSheet("QMainWindow { background:#400071; } QMessageBox { background:#400071; } QMessageBox QLabel { color: #fff; } QDialog { background: #400071; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#400071; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#300060; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #510082; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #7300a4; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #510082; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #7300a4; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
         break;
     }
+    config.Theme = arg1;
 }
 
 void MainWindow::allCheckFalse()
@@ -112,7 +116,6 @@ QPixmap MainWindow::scanImage()
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->resetMatrix();
-    ui->graphicsView->setStyleSheet("border:0px;");
     ui->graphicsView->scroll(0,0);
 
     QPixmap temp = ui->graphicsView->grab();
@@ -136,7 +139,6 @@ QPixmap MainWindow::scanImage()
             ui->graphicsView->scale(0.8,0.8);
         scaleCount *= -1;
     }
-
     return temp;
 }
 
@@ -149,18 +151,21 @@ QPixmap MainWindow::scanImage()
 void MainWindow::on_actionSave_triggered()
 {
     if(OpenImage) {
-        int Answer = QMessageBox::question(this,
-                                           "Really?",
-                                           "Existing images will be erased and overwritten!",
-                                           QMessageBox::Yes | QMessageBox::No);
-        switch (Answer) {
-        case QMessageBox::Yes :
-            break;
-        case QMessageBox::No :
-            return;
+        if(config.SaveAsk) {
+            int Answer = QMessageBox::question(this,
+                                               "Really?",
+                                               "Existing images will be erased and overwritten!",
+                                               QMessageBox::Yes | QMessageBox::No);
+            switch (Answer) {
+            case QMessageBox::Yes :
+                break;
+            case QMessageBox::No :
+                return;
+            }
         }
         QPixmap savePixmap = scanImage();
         savePixmap.save(fileLink);
+        QMessageBox::information(this, "Notify", "Successfully saved.");
     } else {
         QMessageBox::information(this, "Please", "The image must be opened first.");
     }
@@ -192,28 +197,13 @@ void MainWindow::on_actionOpen_triggered()
         }
     }
 
-    if(file->open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        file->open(QIODevice::ReadOnly);
-        QTextStream in(file);
-        in.setCodec("UTF-8");
-        lastWorkDirectory = in.readAll();
-        file->close();
-        fileLink = QFileDialog::getOpenFileName(this,"",lastWorkDirectory);
-    }
-    else
-    {
-        fileLink = QFileDialog::getOpenFileName(this);
-    }
+    fileLink = QFileDialog::getOpenFileName(this,"",config.lastWorkDirectory);
 
     if(fileLink!="") {
         OpenImage = true;
 
-        file->open(QIODevice::WriteOnly);
-        QTextStream out(file);
-        out.setCodec("UTF-8");
-        out << fileLink;
-        file->close();
+        config.lastWorkDirectory = fileLink;
+        config.SAVE();
 
         pixmap.load(fileLink);
 
@@ -381,7 +371,7 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
 {
     int pre = 1;
-    if(PreviewSize < pixmap.size().height()) pre = pixmap.size().height()/PreviewSize;
+    if(config.PreviewSize < pixmap.size().height()) pre = pixmap.size().height()/config.PreviewSize;
     QImage image = pixmap.scaled(pixmap.size().width()/pre,pixmap.size().height()/pre).toImage();
     int r,g,b;
     QRgb rgb;
