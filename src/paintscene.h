@@ -27,6 +27,7 @@ public:
     bool getDrawLine();
     bool getDrawSqure();
     bool getDrawRound();
+    bool isLeft = false;
 
     bool runEdit = false;
 
