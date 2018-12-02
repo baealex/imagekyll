@@ -12,6 +12,7 @@
 #include <QGraphicsScene>
 #include <QResizeEvent>
 #include <QMessageBox>
+#include <QTimer>
 
 #include "paintscene.h"
 
@@ -25,6 +26,7 @@ public:
     int Width;
     int Height;
     QString lastWorkDirectory;
+    unsigned long UndoSize;
 
     // Theme Tab Config
     int Theme;
@@ -40,7 +42,7 @@ public:
 
     UserConfig(){
         file = new QFile;
-        file->setFileName("UserConfig.dat");
+        file->setFileName("UserConfig_2.conf");
         if(!file->open(QIODevice::ReadOnly | QIODevice::Text))
         {
             PosX = 100;
@@ -48,6 +50,7 @@ public:
             Width = 730;
             Height = 550;
             lastWorkDirectory = "";
+            UndoSize = 5;
             Theme = 1;
             SaveAsk = 1;
             PreviewSize = 1080;
@@ -61,7 +64,7 @@ public:
     void SAVE(){
         file->open(QIODevice::WriteOnly);
         QTextStream out(file);
-        out << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n" << lastWorkDirectory << "\n" <<
+        out << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n" << lastWorkDirectory << "\n" << UndoSize << "\n" <<
                Theme << "\n" <<
                SaveAsk << "\n" <<
                PreviewSize << "\n" <<
@@ -76,6 +79,7 @@ public:
          Width = in.readLine().toInt();
          Height = in.readLine().toInt();
          lastWorkDirectory = in.readLine();
+         UndoSize = in.readLine().toLong();
 
          Theme = in.readLine().toInt();
          SaveAsk = in.readLine().toInt();
@@ -108,6 +112,7 @@ public:
     void ThemeSelect(int arg1);
     QPixmap scanImage();
     UserConfig config;
+    void ImageBackup();
 
 private:
     Ui::MainWindow *ui;
@@ -122,6 +127,15 @@ private:
     QPixmap preview;
     int scaleCount = 0;
 
+    QPixmap *ActivityPixmap;
+    int ActivityCount;
+    int StartPoint;
+    int StopPoint;
+    int nowPoint;
+    bool Cycle;
+    bool possibleRedo;
+    bool runUndo;
+
     // SAVE RGB INFOMATION
     int imgRed, imgGreen, imgBlue;
     int penRed, penGreen, penBlue;
@@ -129,6 +143,8 @@ private:
     bool Crop = false;
     bool OpenImage = false;
     QPointF previousPoint;
+
+    QTimer *timer;
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -154,6 +170,9 @@ private slots:
     void on_actionSave_triggered();
     void on_actionOption_triggered();
     void on_actionInfo_triggered();
+    void PaintWatch();
+    void Undo();
+    void Redo();
 };
 
 #endif // MAINWINDOW_H

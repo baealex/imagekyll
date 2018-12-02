@@ -30,6 +30,7 @@ public:
     bool isLeft = false;
 
     bool runEdit = false;
+    bool Drawing = false;
 
 private:
     QPen mPen;
@@ -46,7 +47,7 @@ private:
     bool DrawSqure;
     bool DrawRound;
 
-private:
+protected:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

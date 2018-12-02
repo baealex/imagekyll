@@ -108,6 +108,7 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(DrawDot && isLeft) {
         DrawDot = false;
+        Drawing = true;
     }
     if(DrawLine && isLeft) {
         addLine(previousPoint.x(),
@@ -115,6 +116,7 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 event->scenePos().x(),
                 event->scenePos().y(),
                 mPen);
+        Drawing = true;
     }
     if(DrawSqure && isLeft) {
         addRect(previousPoint.x(),
@@ -122,6 +124,7 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 event->scenePos().x()-previousPoint.x(),
                 event->scenePos().y()-previousPoint.y(),
                 mPen);
+        Drawing = true;
     }
     if(DrawRound && isLeft) {
         addEllipse(previousPoint.x(),
@@ -129,6 +132,7 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                    event->scenePos().x()-previousPoint.x(),
                    event->scenePos().y()-previousPoint.y(),
                    mPen);
+        Drawing = true;
     }
     isLeft = false;
 }

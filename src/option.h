@@ -12,6 +12,7 @@ class Option : public QDialog
 {
     Q_OBJECT
     bool init;
+    int UndoSizeTemp;
 
 public:
     explicit Option(MainWindow &ref, QWidget *parent = nullptr);
@@ -25,6 +26,7 @@ private slots:
     void on_ColorPreviewSize_valueChanged(int arg1);
     void on_SaveAsk_stateChanged(int arg1);
     void on_ResizeRate_stateChanged(int arg1);
+    void on_CUndoSize_valueChanged(int arg1);
 
 private:
     Ui::Option *ui;

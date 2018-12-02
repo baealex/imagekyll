@@ -14,6 +14,7 @@ Option::Option(MainWindow &ref, QWidget *parent) :
     setWindowTitle("Option");
 
     ui->ColorPreviewSize->setValue(mRef.config.PreviewSize);
+    ui->CUndoSize->setValue(mRef.config.UndoSize);
     init = false;
     if(!mRef.config.ResizeRate) {
         ui->ResizeRate->setChecked(true);
@@ -26,6 +27,11 @@ Option::Option(MainWindow &ref, QWidget *parent) :
 
 Option::~Option()
 {
+    if(mRef.config.UndoSize != UndoSizeTemp) {
+        mRef.config.UndoSize = UndoSizeTemp;
+        mRef.config.SAVE();
+        QMessageBox::warning(this, "Notify", "Number of 'undo' has been changed. Please restart the program. Otherwise an error will occur.");
+    }
     delete ui;
 }
 
@@ -52,6 +58,11 @@ void Option::on_ThemePurple_clicked()
 void Option::on_ColorPreviewSize_valueChanged(int arg1)
 {
     mRef.config.PreviewSize = arg1;
+}
+
+void Option::on_CUndoSize_valueChanged(int arg1)
+{
+    UndoSizeTemp = arg1;
 }
 
 void Option::on_SaveAsk_stateChanged(int arg1)

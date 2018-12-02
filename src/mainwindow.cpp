@@ -19,6 +19,18 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
+    ActivityPixmap = new QPixmap[config.UndoSize];
+    ActivityCount = 0;
+    StartPoint = 0;
+    StopPoint = 0;
+    nowPoint = 0;
+    Cycle = false;
+    runUndo = false;
+    possibleRedo = false;
+
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), this, SLOT(Undo()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Y), this, SLOT(Redo()));
+
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O), this, SLOT(on_actionOpen_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, SLOT(on_actionSave_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S), this, SLOT(on_actionSave_as_triggered()));
@@ -30,6 +42,12 @@ MainWindow::MainWindow(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(on_actionInfo_triggered()));
 
     scene = new paintScene(this);
+
+    timer = new QTimer;
+    timer->start();
+    timer->setInterval(10);
+
+    connect(timer,SIGNAL(timeout()),this,SLOT(PaintWatch()));
 
     ui->graphicsView->setScene(scene);
     ui->penSize->setValue(5);
@@ -47,6 +65,9 @@ void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
 
     QMenu myMenu;
     myMenu.setStyleSheet("QMenu {color: #fff;background-color: #333;border: 1px solid black;} QMenu::item {background-color: transparent;} QMenu::item:selected {background-color: #555;}");
+    myMenu.addAction("Undo (Ctrl + Z)", this, SLOT(Undo()));
+    myMenu.addAction("Redo (Ctrl + Y)", this, SLOT(Redo()));
+    myMenu.addSeparator();
     myMenu.addAction("Open (Ctrl + O)", this, SLOT(on_actionOpen_triggered()));
     myMenu.addAction("Save (Ctrl + S)", this, SLOT(on_actionSave_triggered()));
     myMenu.addAction("Save as (Ctrl + Shift + S)", this, SLOT(on_actionRGB_triggered()));
@@ -76,6 +97,128 @@ MainWindow::~MainWindow()
  * MY FUNCTION
  *
  */
+
+void MainWindow::PaintWatch()
+{
+    if(scene->Drawing)
+    {
+        ImageBackup();
+        scene->Drawing = !scene->Drawing;
+    }
+}
+
+void MainWindow::ImageBackup()
+{
+    if(!Cycle)
+    {
+        if(runUndo)
+        {
+            ActivityCount = nowPoint + 2;
+            runUndo = false;
+        }
+        ActivityPixmap[ActivityCount] = scanImage();
+        ActivityCount++;
+
+        if(ActivityCount >= (int)config.UndoSize)
+        {
+            ActivityCount = 0;
+            StopPoint = (int)config.UndoSize - 1;
+            Cycle = true;
+        }
+        else
+        {
+            StartPoint = 0;
+            StopPoint = ActivityCount - 1;
+        }
+    }
+    else
+    {
+        if(runUndo)
+        {
+            ActivityCount = nowPoint + 2;
+            if(ActivityCount >= (int)config.UndoSize)
+            {
+                ActivityCount = 0;
+                StartPoint = ActivityCount;
+                StopPoint = (int)config.UndoSize - 1;
+            }
+            runUndo = false;
+        }
+        ActivityPixmap[ActivityCount] = scanImage();
+        ActivityCount++;
+
+        if(ActivityCount >= (int)config.UndoSize)
+        {
+            ActivityCount = 0;
+            StartPoint = ActivityCount;
+            StopPoint = (int)config.UndoSize - 1;
+        }
+        else
+        {
+            StartPoint = ActivityCount;
+            StopPoint = ActivityCount - 1;
+        }
+    }
+
+    ui->l->setText(QString::number(ActivityCount));
+    ui->l_2->setText(QString::number(StartPoint));
+    ui->l_3->setText(QString::number(StopPoint));
+    ui->l_4->setText(QString::number(nowPoint));
+}
+
+void MainWindow::Undo()
+{
+    if(!runUndo)
+    {
+        nowPoint = StopPoint - 1;
+        runUndo = true;
+    }
+
+    if(Cycle)
+    {
+        if(nowPoint < 0)
+        {
+            nowPoint = config.UndoSize - 1;
+        }
+
+        if(nowPoint == StartPoint)
+        {
+            QMessageBox::information(this, "Notify", "Cannot Undo.");
+            return;
+        }
+    }
+    else
+    {
+        if(nowPoint < StartPoint)
+        {
+            QMessageBox::information(this, "Notify", "Cannot Undo.");
+            return;
+        }
+    }
+
+    pixmap = ActivityPixmap[nowPoint];
+
+    nowPoint--;
+
+    scene = new paintScene(this);
+    ui->graphicsView->setScene(scene);
+
+    scene->setPenSize(ui->penSize->value());
+    scene->setColor(penRed, penGreen, penBlue);
+
+    item = new QGraphicsPixmapItem(pixmap);
+    scene->addItem(item);
+
+    ui->l->setText(QString::number(ActivityCount));
+    ui->l_2->setText(QString::number(StartPoint));
+    ui->l_3->setText(QString::number(StopPoint));
+    ui->l_4->setText(QString::number(nowPoint));
+}
+
+void MainWindow::Redo()
+{
+
+}
 
 void MainWindow::ThemeSelect(int arg1)
 {
@@ -222,6 +365,8 @@ void MainWindow::on_actionOpen_triggered()
         scene->addItem(item);
 
         scene->runEdit = false;
+
+        ImageBackup();
     }
 }
 
@@ -366,6 +511,8 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
     }
     preview = QPixmap::fromImage(image);
     item->setPixmap(preview);
+
+    ImageBackup();
 }
 
 void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
@@ -468,6 +615,8 @@ void MainWindow::Image_Size_Change(int w, int h)
 
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
+
+    ImageBackup();
 }
 
 /*
@@ -516,6 +665,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
 
         ui->cropBtn->setChecked(false);
         Crop = false;
+
+        ImageBackup();
     }
 }
 
