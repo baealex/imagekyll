@@ -29,7 +29,7 @@
     <enum>Qt::LeftToRight</enum>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program is produced in Qt.&lt;br/&gt;The program creator is &lt;a href=&quot;https://github.com/baealex&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;@baealex&lt;/span&gt;&lt;/a&gt; &lt;br/&gt;and follows the LGPL v3 license.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program is produced in Qt.&lt;br/&gt;The program creator is @baealex&lt;br/&gt;and follows the LGPL v3 license.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>

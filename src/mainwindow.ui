@@ -208,7 +208,7 @@
      </font>
     </property>
     <property name="text">
-     <string>[ ]</string>
+     <string>/</string>
     </property>
     <property name="checkable">
      <bool>true</bool>
@@ -306,8 +306,11 @@
    </property>
   </action>
   <action name="actionHue">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
-    <string>Hue</string>
+    <string>None</string>
    </property>
   </action>
   <action name="actionOption">

@@ -54,77 +54,82 @@ bool paintScene::getDrawSqure() {
 }
 
 void paintScene::mousePressEvent(QGraphicsSceneMouseEvent * event){
-    runEdit = true;
-    if(DrawDotR) {
-        DrawDot = true;
+    if(event->buttons() == Qt::LeftButton) {
+        runEdit = true;
+        if(DrawDotR) {
+            DrawDot = true;
+        }
+        previousPoint = event->scenePos();
     }
-    previousPoint = event->scenePos();
 }
 
 void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
-
-    if(DrawDot) {
-        addLine(previousPoint.x(),
-                previousPoint.y(),
-                event->scenePos().x(),
-                event->scenePos().y(),
-                mPen);
-        previousPoint = event->scenePos();
+    if(event->buttons() == Qt::LeftButton) {
+        if(DrawDot) {
+            addLine(previousPoint.x(),
+                    previousPoint.y(),
+                    event->scenePos().x(),
+                    event->scenePos().y(),
+                    mPen);
+            previousPoint = event->scenePos();
+        }
+        if(DrawLine) {
+            removeItem(linePreview);
+            linePreview->setLine(previousPoint.x(),
+                                 previousPoint.y(),
+                                 event->scenePos().x(),
+                                 event->scenePos().y());
+            linePreview->setPen(mPen);
+            addItem(linePreview);
+        }
+        if(DrawSqure) {
+            removeItem(rectPreview);
+            rectPreview->setRect(previousPoint.x(),
+                                 previousPoint.y(),
+                                 event->scenePos().x()-previousPoint.x(),
+                                 event->scenePos().y()-previousPoint.y());
+            rectPreview->setPen(mPen);
+            addItem(rectPreview);
+        }
+        if(DrawRound) {
+            removeItem(ellipesPreview);
+            ellipesPreview->setRect(previousPoint.x(),
+                                    previousPoint.y(),
+                                    event->scenePos().x()-previousPoint.x(),
+                                    event->scenePos().y()-previousPoint.y());
+            ellipesPreview->setPen(mPen);
+            addItem(ellipesPreview);
+        }
+        update(0,0,width(),height());
     }
-    if(DrawLine) {
-        removeItem(linePreview);
-        linePreview->setLine(previousPoint.x(),
-                             previousPoint.y(),
-                             event->scenePos().x(),
-                             event->scenePos().y());
-        linePreview->setPen(mPen);
-        addItem(linePreview);
-    }
-    if(DrawSqure) {
-        removeItem(rectPreview);
-        rectPreview->setRect(previousPoint.x(),
-                             previousPoint.y(),
-                             event->scenePos().x()-previousPoint.x(),
-                             event->scenePos().y()-previousPoint.y());
-        rectPreview->setPen(mPen);
-        addItem(rectPreview);
-    }
-    if(DrawRound) {
-        removeItem(ellipesPreview);
-        ellipesPreview->setRect(previousPoint.x(),
-                                previousPoint.y(),
-                                event->scenePos().x()-previousPoint.x(),
-                                event->scenePos().y()-previousPoint.y());
-        ellipesPreview->setPen(mPen);
-        addItem(ellipesPreview);
-    }
-    update(0,0,width(),height());
 }
 
 void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(DrawDot) {
-        DrawDot = false;
-    }
-    if(DrawLine) {
-        addLine(previousPoint.x(),
-                previousPoint.y(),
-                event->scenePos().x(),
-                event->scenePos().y(),
-                mPen);
-    }
-    if(DrawSqure) {
-        addRect(previousPoint.x(),
-                previousPoint.y(),
-                event->scenePos().x()-previousPoint.x(),
-                event->scenePos().y()-previousPoint.y(),
-                mPen);
-    }
-    if(DrawRound) {
-        addEllipse(previousPoint.x(),
-                   previousPoint.y(),
-                   event->scenePos().x()-previousPoint.x(),
-                   event->scenePos().y()-previousPoint.y(),
-                   mPen);
+    if(event->buttons() == Qt::LeftButton) {
+        if(DrawDot) {
+            DrawDot = false;
+        }
+        if(DrawLine) {
+            addLine(previousPoint.x(),
+                    previousPoint.y(),
+                    event->scenePos().x(),
+                    event->scenePos().y(),
+                    mPen);
+        }
+        if(DrawSqure) {
+            addRect(previousPoint.x(),
+                    previousPoint.y(),
+                    event->scenePos().x()-previousPoint.x(),
+                    event->scenePos().y()-previousPoint.y(),
+                    mPen);
+        }
+        if(DrawRound) {
+            addEllipse(previousPoint.x(),
+                       previousPoint.y(),
+                       event->scenePos().x()-previousPoint.x(),
+                       event->scenePos().y()-previousPoint.y(),
+                       mPen);
+        }
     }
 }
