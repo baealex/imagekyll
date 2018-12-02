@@ -11,6 +11,9 @@ paintScene::~paintScene() {
 void paintScene::setColor(int r,int g,int b) {
     QBrush brush(QColor(r,g,b));
     mPen.setBrush(brush);
+    linePreview = new QGraphicsLineItem();
+    rectPreview = new QGraphicsRectItem();
+    ellipesPreview = new QGraphicsEllipseItem();
 }
 
 void paintScene::setPenSize(int size) {
@@ -69,13 +72,33 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
         previousPoint = event->scenePos();
     }
     if(DrawLine) {
-        addLine(previousPoint.x(),
-                previousPoint.y(),
-                event->scenePos().x(),
-                event->scenePos().y(),
-                mPen);
-
+        removeItem(linePreview);
+        linePreview->setLine(previousPoint.x(),
+                             previousPoint.y(),
+                             event->scenePos().x(),
+                             event->scenePos().y());
+        linePreview->setPen(mPen);
+        addItem(linePreview);
     }
+    if(DrawSqure) {
+        removeItem(rectPreview);
+        rectPreview->setRect(previousPoint.x(),
+                             previousPoint.y(),
+                             event->scenePos().x()-previousPoint.x(),
+                             event->scenePos().y()-previousPoint.y());
+        rectPreview->setPen(mPen);
+        addItem(rectPreview);
+    }
+    if(DrawRound) {
+        removeItem(ellipesPreview);
+        ellipesPreview->setRect(previousPoint.x(),
+                                previousPoint.y(),
+                                event->scenePos().x()-previousPoint.x(),
+                                event->scenePos().y()-previousPoint.y());
+        ellipesPreview->setPen(mPen);
+        addItem(ellipesPreview);
+    }
+    update(0,0,width(),height());
 }
 
 void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

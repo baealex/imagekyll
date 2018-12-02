@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsLineItem>
 #include <QTimer>
 #include <QDebug>
 
@@ -33,6 +34,10 @@ private:
     QPen mPen;
     int PenSize;
     QPointF previousPoint;
+
+    QGraphicsLineItem *linePreview;
+    QGraphicsRectItem *rectPreview;
+    QGraphicsEllipseItem *ellipesPreview;
 
     bool DrawDot;
     bool DrawDotR;
