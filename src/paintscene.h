@@ -31,6 +31,7 @@ public:
 
     bool runEdit = false;
     bool Drawing = false;
+    int ObjectCount = 0;
 
 private:
     QPen mPen;

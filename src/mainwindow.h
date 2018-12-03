@@ -12,6 +12,7 @@
 #include <QGraphicsScene>
 #include <QResizeEvent>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QTimer>
 
 #include "paintscene.h"

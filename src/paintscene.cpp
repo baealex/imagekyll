@@ -74,7 +74,7 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
                 mPen);
         previousPoint = event->scenePos();
     }
-    if(DrawLine && isLeft) {
+    else if(DrawLine && isLeft) {
         removeItem(linePreview);
         linePreview->setLine(previousPoint.x(),
                              previousPoint.y(),
@@ -83,7 +83,7 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
         linePreview->setPen(mPen);
         addItem(linePreview);
     }
-    if(DrawSqure && isLeft) {
+    else if(DrawSqure && isLeft) {
         removeItem(rectPreview);
         rectPreview->setRect(previousPoint.x(),
                              previousPoint.y(),
@@ -92,7 +92,7 @@ void paintScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event){
         rectPreview->setPen(mPen);
         addItem(rectPreview);
     }
-    if(DrawRound && isLeft) {
+    else if(DrawRound && isLeft) {
         removeItem(ellipesPreview);
         ellipesPreview->setRect(previousPoint.x(),
                                 previousPoint.y(),
@@ -109,30 +109,37 @@ void paintScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if(DrawDot && isLeft) {
         DrawDot = false;
         Drawing = true;
+        isLeft = false;
+        ObjectCount++;
     }
-    if(DrawLine && isLeft) {
+    else if(DrawLine && isLeft) {
         addLine(previousPoint.x(),
                 previousPoint.y(),
                 event->scenePos().x(),
                 event->scenePos().y(),
                 mPen);
         Drawing = true;
+        isLeft = false;
+        ObjectCount++;
     }
-    if(DrawSqure && isLeft) {
+    else if(DrawSqure && isLeft) {
         addRect(previousPoint.x(),
                 previousPoint.y(),
                 event->scenePos().x()-previousPoint.x(),
                 event->scenePos().y()-previousPoint.y(),
                 mPen);
         Drawing = true;
+        isLeft = false;
+        ObjectCount++;
     }
-    if(DrawRound && isLeft) {
+    else if(DrawRound && isLeft) {
         addEllipse(previousPoint.x(),
                    previousPoint.y(),
                    event->scenePos().x()-previousPoint.x(),
                    event->scenePos().y()-previousPoint.y(),
                    mPen);
         Drawing = true;
+        isLeft = false;
+        ObjectCount++;
     }
-    isLeft = false;
 }

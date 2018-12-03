@@ -255,6 +255,10 @@ QPixmap MainWindow::scanImage()
     widthTemp = ui->graphicsView->geometry().width();
     heightTemp = ui->graphicsView->geometry().height();
 
+    int posScroll[2];
+    posScroll[0] = ui->graphicsView->horizontalScrollBar()->value();
+    posScroll[1] = ui->graphicsView->verticalScrollBar()->value();
+
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),scene->width(),scene->height());
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -266,6 +270,10 @@ QPixmap MainWindow::scanImage()
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),widthTemp,heightTemp);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+    ui->graphicsView->horizontalScrollBar()->setValue(posScroll[0]);
+    ui->graphicsView->verticalScrollBar()->setValue(posScroll[1]);
+
     if(scaleCount > 0)
     {
         for(int i=0;i<scaleCount;i++)
@@ -629,6 +637,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     if(Crop) {
         previousPoint = event->localPos();
         ui->cropLabel->setStyleSheet("border: 3px solid red;");
+        ui->cropLabel->setGeometry(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y());
     }
 }
 
