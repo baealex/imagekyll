@@ -636,6 +636,8 @@ void MainWindow::Image_Size_Change(int w, int h)
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     if(Crop) {
         previousPoint = event->localPos();
+        previousPoint.setY(previousPoint.y()-ui->menuBar->height());
+
         ui->cropLabel->setStyleSheet("border: 3px solid red;");
         ui->cropLabel->setGeometry(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y());
     }
@@ -643,7 +645,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     if(Crop) {
-        ui->cropLabel->setGeometry(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y());
+        lastPoint = event->localPos()-previousPoint;
+        lastPoint.setY(lastPoint.y()-ui->menuBar->height());
+
+        ui->cropLabel->setGeometry(previousPoint.x(), previousPoint.y(), lastPoint.x(), lastPoint.y());
     }
 }
 
@@ -654,7 +659,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
         ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        pixmap = ui->graphicsView->grab(QRect(previousPoint.x(),previousPoint.y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-previousPoint.y()));
+        pixmap = ui->graphicsView->grab(QRect(previousPoint.x()-ui->graphicsView->x(),previousPoint.y()-ui->graphicsView->y(),event->localPos().x()-previousPoint.x(),event->localPos().y()-ui->menuBar->height()-previousPoint.y()));
 
         ui->graphicsView->resetMatrix();
         scaleCount = 0;
@@ -694,3 +699,4 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
     ui->separator->setGeometry(0,0,this->geometry().width(),1);
 }
+

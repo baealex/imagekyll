@@ -144,6 +144,7 @@ private:
     bool Crop = false;
     bool OpenImage = false;
     QPointF previousPoint;
+    QPointF lastPoint;
 
     QTimer *timer;
 
