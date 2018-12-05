@@ -111,6 +111,7 @@ public:
     void setColorStyle(int slider_r, int slider_g, int slider_b);
     void Image_Hue_Change();
     void ThemeSelect(int arg1);
+    void FindPen();
     QPixmap scanImage();
     UserConfig config;
     void ImageBackup();
@@ -119,6 +120,7 @@ private:
     Ui::MainWindow *ui;
     QPixmap pixmap;
     paintScene *scene;
+    int ScrollPos[2];
 
     QString fileLink;
     QFile *file;

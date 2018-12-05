@@ -41,6 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O), this, SLOT(on_actionOption_triggered()));
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(on_actionInfo_triggered()));
 
+    new QShortcut(QKeySequence(Qt::Key_Minus + Qt::SHIFT), this, SLOT(on_zoomoutBtn_clicked()));
+    new QShortcut(QKeySequence(Qt::Key_Plus), this, SLOT(on_zoominBtn_clicked()));
+
     scene = new paintScene(this);
 
     timer = new QTimer;
@@ -209,6 +212,8 @@ void MainWindow::Undo()
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
 
+    FindPen();
+
     ui->l->setText(QString::number(ActivityCount));
     ui->l_2->setText(QString::number(StartPoint));
     ui->l_3->setText(QString::number(StopPoint));
@@ -218,6 +223,34 @@ void MainWindow::Undo()
 void MainWindow::Redo()
 {
 
+}
+
+void MainWindow::FindPen()
+{
+    if(ui->dotBtn->isChecked())
+    {
+        allCheckFalse();
+        ui->dotBtn->setChecked(true);
+        scene->setDrawDot(true);
+    }
+    else if(ui->lineBtn->isChecked())
+    {
+        allCheckFalse();
+        ui->lineBtn->setChecked(true);
+        scene->setDrawLine(true);
+    }
+    else if(ui->squreBtn->isChecked())
+    {
+        allCheckFalse();
+        ui->squreBtn->setChecked(true);
+        scene->setDrawSqure(true);
+    }
+    else if(ui->roundBtn->isChecked())
+    {
+        allCheckFalse();
+        ui->roundBtn->setChecked(true);
+        scene->setDrawRound(true);
+    }
 }
 
 void MainWindow::ThemeSelect(int arg1)
@@ -255,9 +288,8 @@ QPixmap MainWindow::scanImage()
     widthTemp = ui->graphicsView->geometry().width();
     heightTemp = ui->graphicsView->geometry().height();
 
-    int posScroll[2];
-    posScroll[0] = ui->graphicsView->horizontalScrollBar()->value();
-    posScroll[1] = ui->graphicsView->verticalScrollBar()->value();
+    ScrollPos[0] = ui->graphicsView->horizontalScrollBar()->value();
+    ScrollPos[1] = ui->graphicsView->verticalScrollBar()->value();
 
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),scene->width(),scene->height());
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -271,8 +303,8 @@ QPixmap MainWindow::scanImage()
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    ui->graphicsView->horizontalScrollBar()->setValue(posScroll[0]);
-    ui->graphicsView->verticalScrollBar()->setValue(posScroll[1]);
+    ui->graphicsView->horizontalScrollBar()->setValue(ScrollPos[0]);
+    ui->graphicsView->verticalScrollBar()->setValue(ScrollPos[1]);
 
     if(scaleCount > 0)
     {
@@ -620,6 +652,7 @@ void MainWindow::Image_Size_Change(int w, int h)
 
     scene->setPenSize(ui->penSize->value());
     scene->setColor(penRed, penGreen, penBlue);
+    FindPen();
 
     item = new QGraphicsPixmapItem(pixmap);
     scene->addItem(item);
