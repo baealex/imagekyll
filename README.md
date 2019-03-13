@@ -119,4 +119,4 @@ Windows 7+ x64 : [ImageEditor_x64.zip](https://www.dropbox.com/sh/9ohue147wg19bf
 
 ## 개발자 정보	
 
-Jino Bae. – [BLOG](https://www.blex.kr/) – bae_alex@naver.com
+Jino Bae. – [BLOG](https://baejino.com) – im@baejino.com

@@ -352,7 +352,7 @@
      <string>Edit</string>
     </property>
     <addaction name="actionRGB"/>
-    <addaction name="actionHue"/>
+    <addaction name="actionHIS"/>
     <addaction name="separator"/>
     <addaction name="actionResizing"/>
    </widget>
@@ -393,12 +393,12 @@
     <string>Resize</string>
    </property>
   </action>
-  <action name="actionHue">
+  <action name="actionHIS">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>None</string>
+    <string>HIS</string>
    </property>
   </action>
   <action name="actionOption">
@@ -409,6 +409,11 @@
   <action name="actionInfo">
    <property name="text">
     <string>Infomation</string>
+   </property>
+  </action>
+  <action name="actionCompress">
+   <property name="text">
+    <string>Compress</string>
    </property>
   </action>
  </widget>

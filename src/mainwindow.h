@@ -112,6 +112,9 @@ public:
     void Image_Hue_Change();
     void ThemeSelect(int arg1);
     void FindPen();
+    void Image_Hue_Change(int slider);
+    void Image_Intensity_Change(int slider);
+    void Image_Saturation_Change(int slider);
     QPixmap scanImage();
     UserConfig config;
     void ImageBackup();
@@ -177,6 +180,7 @@ private slots:
     void PaintWatch();
     void Undo();
     void Redo();
+    void on_actionHIS_triggered();
 };
 
 #endif // MAINWINDOW_H

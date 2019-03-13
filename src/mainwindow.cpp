@@ -360,7 +360,7 @@ void MainWindow::on_actionSave_as_triggered()
         QPixmap savePixmap = scanImage();
         savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 }
 
@@ -456,7 +456,7 @@ void MainWindow::on_cropBtn_clicked()
         }
         ui->cropBtn->setChecked(Crop);
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 }
 
@@ -467,7 +467,7 @@ void MainWindow::on_dotBtn_clicked()
         ui->dotBtn->setChecked(true);
         scene->setDrawDot(true);
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 
 }
@@ -479,7 +479,7 @@ void MainWindow::on_lineBtn_clicked()
         ui->lineBtn->setChecked(true);
         scene->setDrawLine(true);
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 
 }
@@ -491,7 +491,7 @@ void MainWindow::on_squreBtn_clicked()
         ui->squreBtn->setChecked(true);
         scene->setDrawSqure(true);
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 
 }
@@ -503,7 +503,7 @@ void MainWindow::on_roundBtn_clicked()
         ui->roundBtn->setChecked(true);
         scene->setDrawRound(true);
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 
 }
@@ -520,7 +520,7 @@ void MainWindow::on_actionRGB_triggered()
         rgb_changer rgb(*this, 0, imgRed, imgGreen, imgBlue, this);
         rgb.exec();
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 }
 
@@ -583,22 +583,120 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
     item->setPixmap(preview);
 }
 
-void MainWindow::Image_Hue_Change()
-{
-    QImage image = pixmap.toImage();
-    for(int i=0; i<image.width(); i++)
-    {
-        for(int j=0; j<image.height(); j++)
-        {
-            QColor color = image.pixelColor(i,j);
+/*
+ *
+ * HIS CHANGE
+ *
+ */
 
-            int hue = color.hue();
-            color.setHsv(hue, color.saturation(), color.value(), color.alpha());
-            image.setPixelColor(i, j, color);
+void MainWindow::on_actionHIS_triggered()
+{
+    if(OpenImage) {
+        rgb_changer his(*this, 2, imgRed, imgGreen, imgBlue, this);
+        his.exec();
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
+
+void MainWindow::Image_Hue_Change(int slider)
+{
+    scene->runEdit = true;
+    QImage image = pixmap.toImage();
+    double RGB[3],hue;
+    QRgb rgb;
+
+    for(int y = 0; y < image.height(); y++)
+    {
+        for(int x = 0 ; x < image.width(); x++)
+        {
+            rgb = image.pixel(x,y);
+            RGB[0] = qRed(rgb) / 255;
+            RGB[1] = qGreen(rgb) / 255;
+            RGB[2] = qBlue(rgb) / 255;
+
+            double min = 999, max = 0;
+            int max_index = 0;
+            for(int i=0;i<3;i++) {
+                if(min > RGB[i]) min = RGB[i];
+                if(max < RGB[i]) { max = RGB[i]; max_index = i; }
+            }
+
+            switch(max_index) {
+            case 0: // Red is max
+                hue = (RGB[1]-RGB[2])/(max-min);
+                break;
+            case 1: // Green is max
+                hue = 2.0 + (RGB[2]-RGB[1])/(max-min);
+                break;
+            case 2: // Blue is max
+                hue = 4.0 + (RGB[0]-RGB[1])/(max-min);
+                break;
+            }
+
+            // image.setPixel(x,y,qRgb(r,g,b));
         }
     }
-    preview = QPixmap::fromImage(image.scaled(image.size().width(),image.size().height()));
+    preview = QPixmap::fromImage(image);
     item->setPixmap(preview);
+
+    ImageBackup();
+}
+
+void MainWindow::Image_Intensity_Change(int slider)
+{
+    scene->runEdit = true;
+    QImage image = pixmap.toImage();
+    double r,g,b;
+    double intensity;
+    QRgb rgb;
+
+    for(int y = 0; y < image.height(); y++)
+    {
+        for(int x = 0 ; x < image.width(); x++)
+        {
+            rgb = image.pixel(x,y);
+            r = qRed(rgb);
+            g = qGreen(rgb);
+            b = qBlue(rgb);
+            intensity = (r+g+b)/3;
+            image.setPixel(x,y,qRgb(r,g,b));
+        }
+    }
+    preview = QPixmap::fromImage(image);
+    item->setPixmap(preview);
+
+    ImageBackup();
+}
+
+void MainWindow::Image_Saturation_Change(int slider)
+{
+    scene->runEdit = true;
+    QImage image = pixmap.toImage();
+    double RGB[3];
+    double saturation;
+    QRgb rgb;
+
+    for(int y = 0; y < image.height(); y++)
+    {
+        for(int x = 0 ; x < image.width(); x++)
+        {
+            rgb = image.pixel(x,y);
+            RGB[0] = qRed(rgb);
+            RGB[1] = qGreen(rgb);
+            RGB[2] = qBlue(rgb);
+            double min = 999;
+            for(int i=0;i<3;i++) {
+                if(min > RGB[i]) min = RGB[i];
+            }
+            saturation = 1 - 3/(RGB[0]+RGB[1]+RGB[2]) * min;
+            image.setPixel(x,y,qRgb(r,g,b));
+        }
+    }
+    preview = QPixmap::fromImage(image);
+    item->setPixmap(preview);
+
+    ImageBackup();
 }
 
 /*
@@ -638,7 +736,7 @@ void MainWindow::on_actionResizing_triggered()
         image_resizer resizer(*this, pixmap.width(), pixmap.height(), this);
         resizer.exec();
     } else {
-        QMessageBox::information(this,"Please","The image must be opened first.");
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
 }
 
@@ -732,4 +830,3 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
     ui->separator->setGeometry(0,0,this->geometry().width(),1);
 }
-

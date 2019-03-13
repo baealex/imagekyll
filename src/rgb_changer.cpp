@@ -49,7 +49,19 @@ rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget
         ui->blueSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 255, 255)); margin: 2px 0;}");
         break;
     case 2:
-
+        setWindowTitle("Brush Color");
+        ui->redSlider->setMaximum(255);
+        ui->redSlider->setMinimum(0);
+        ui->redSlider->setValue(r);
+        ui->redSlider->setStyleSheet("");
+        ui->greenSlider->setMaximum(255);
+        ui->greenSlider->setMinimum(0);
+        ui->greenSlider->setValue(g);
+        ui->greenSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255)); margin: 2px 0;}");
+        ui->blueSlider->setMaximum(255);
+        ui->blueSlider->setMinimum(0);
+        ui->blueSlider->setValue(b);
+        ui->blueSlider->setStyleSheet("QSlider::groove:horizontal {border: 1px solid #999999; height: 8px; background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255)); margin: 2px 0;}");
         break;
     }
 }
@@ -66,6 +78,9 @@ void rgb_changer::on_redSlider_valueChanged(int value)
         mRef.Image_RGB_Preview_Change(rColor=value, gColor, bColor);
         break;
     case 1:
+        mRef.setColorStyle(rColor=value, gColor, bColor);
+        break;
+    case 2:
         mRef.setColorStyle(rColor=value, gColor, bColor);
         break;
     }
