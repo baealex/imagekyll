@@ -27,6 +27,7 @@ private slots:
     void on_SaveAsk_stateChanged(int arg1);
     void on_ResizeRate_stateChanged(int arg1);
     void on_CUndoSize_valueChanged(int arg1);
+    void on_SaveCompress_valueChanged(int arg1);
 
 private:
     Ui::Option *ui;

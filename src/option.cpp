@@ -15,6 +15,7 @@ Option::Option(MainWindow &ref, QWidget *parent) :
 
     ui->ColorPreviewSize->setValue(mRef.config.PreviewSize);
     ui->CUndoSize->setValue(mRef.config.UndoSize);
+    ui->SaveCompress->setValue(mRef.config.SaveCompress);
     init = false;
     if(!mRef.config.ResizeRate) {
         ui->ResizeRate->setChecked(true);
@@ -89,4 +90,9 @@ void Option::on_ResizeRate_stateChanged(int arg1)
             mRef.config.ResizeRate = 1;
         }
     }
+}
+
+void Option::on_SaveCompress_valueChanged(int arg1)
+{
+    mRef.config.SaveCompress = arg1;
 }

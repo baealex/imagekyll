@@ -34,6 +34,7 @@ public:
 
     // Save Tab Config
     int SaveAsk;
+    int SaveCompress;
 
     // Color Tab Config
     int PreviewSize;
@@ -54,6 +55,7 @@ public:
             UndoSize = 5;
             Theme = 1;
             SaveAsk = 1;
+            SaveCompress = 100;
             PreviewSize = 1080;
             ResizeRate = 1;
         }
@@ -68,6 +70,7 @@ public:
         out << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n" << lastWorkDirectory << "\n" << UndoSize << "\n" <<
                Theme << "\n" <<
                SaveAsk << "\n" <<
+               SaveCompress << "\n" <<
                PreviewSize << "\n" <<
                ResizeRate;
         file->close();
@@ -84,6 +87,7 @@ public:
 
          Theme = in.readLine().toInt();
          SaveAsk = in.readLine().toInt();
+         SaveCompress = in.readLine().toInt();
          PreviewSize = in.readLine().toInt();
          ResizeRate = in.readLine().toInt();
          file->close();

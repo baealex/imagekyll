@@ -347,7 +347,7 @@ void MainWindow::on_actionSave_triggered()
             }
         }
         QPixmap savePixmap = scanImage();
-        savePixmap.save(fileLink);
+        savePixmap.save(fileLink,nullptr,config.SaveCompress);
         QMessageBox::information(this, "Notify", "Successfully saved.");
     } else {
         QMessageBox::information(this, "Please", "The image must be opened first.");
@@ -358,7 +358,7 @@ void MainWindow::on_actionSave_as_triggered()
 {
     if(OpenImage) {
         QPixmap savePixmap = scanImage();
-        savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","",tr("PNG(*.png) ;; JPEG (*.jpg)")));
+        savePixmap.save(QFileDialog::getSaveFileName(this,"SAVE FILE","","PNG(*.png) ;; JPEG (*.jpg)"),nullptr,config.SaveCompress);
     } else {
         QMessageBox::information(this,"Notice","Please the image must be opened first.");
     }
@@ -690,7 +690,6 @@ void MainWindow::Image_Saturation_Change(int slider)
                 if(min > RGB[i]) min = RGB[i];
             }
             saturation = 1 - 3/(RGB[0]+RGB[1]+RGB[2]) * min;
-            image.setPixel(x,y,qRgb(r,g,b));
         }
     }
     preview = QPixmap::fromImage(image);

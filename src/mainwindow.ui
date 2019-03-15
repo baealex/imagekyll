@@ -416,6 +416,11 @@
     <string>Compress</string>
    </property>
   </action>
+  <action name="actionCompress_2">
+   <property name="text">
+    <string>Compress</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
