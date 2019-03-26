@@ -21,7 +21,7 @@ class UserConfig {
 private:
     QFile *file;
 public:
-    // Basic Config
+    // Layout infomation
     int PosX;
     int PosY;
     int Width;
@@ -29,17 +29,17 @@ public:
     QString lastWorkDirectory;
     unsigned long UndoSize;
 
-    // Theme Tab Config
+    // Setting Theme Tab infomation
     int Theme;
 
-    // Save Tab Config
+    // Setting Save Tab infomation
     int SaveAsk;
     int SaveCompress;
 
-    // Color Tab Config
+    // Setting Color Tab infomation
     int PreviewSize;
 
-    // Resize Tab Config
+    // Setting Resize Tab infomation
     int ResizeRate;
 
     UserConfig(){
@@ -69,8 +69,7 @@ public:
         QTextStream out(file);
         out << PosX << "\n" << PosY << "\n" << Width << "\n" << Height << "\n" << lastWorkDirectory << "\n" << UndoSize << "\n" <<
                Theme << "\n" <<
-               SaveAsk << "\n" <<
-               SaveCompress << "\n" <<
+               SaveAsk << "\n" << SaveCompress << "\n" <<
                PreviewSize << "\n" <<
                ResizeRate;
         file->close();

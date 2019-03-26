@@ -12,13 +12,16 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Layout initialize
     ThemeSelect(config.Theme);
+    // -----
     this->move(config.PosX, config.PosY);
     this->setGeometry(config.PosX, config.PosY, config.Width, config.Height);
-
+    // -----
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
+    // Variable initialize
     ActivityPixmap = new QPixmap[config.UndoSize];
     ActivityCount = 0;
     StartPoint = 0;
@@ -27,29 +30,30 @@ MainWindow::MainWindow(QWidget *parent) :
     Cycle = false;
     runUndo = false;
     possibleRedo = false;
+    scene = new paintScene(this);
+    timer = new QTimer;
 
+    // Shortcut initialize
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), this, SLOT(Undo()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Y), this, SLOT(Redo()));
-
+    // -----
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_O), this, SLOT(on_actionOpen_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this, SLOT(on_actionSave_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S), this, SLOT(on_actionSave_as_triggered()));
-
+    // -----
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_C), this, SLOT(on_actionRGB_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_R), this, SLOT(on_actionResizing_triggered()));
-
+    // -----
     new QShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O), this, SLOT(on_actionOption_triggered()));
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(on_actionInfo_triggered()));
-
+    // -----
     new QShortcut(QKeySequence(Qt::Key_Minus + Qt::SHIFT), this, SLOT(on_zoomoutBtn_clicked()));
     new QShortcut(QKeySequence(Qt::Key_Plus), this, SLOT(on_zoominBtn_clicked()));
 
-    scene = new paintScene(this);
 
-    timer = new QTimer;
+
     timer->start();
     timer->setInterval(10);
-
     connect(timer,SIGNAL(timeout()),this,SLOT(PaintWatch()));
 
     ui->graphicsView->setScene(scene);
@@ -64,6 +68,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
 {
+    /*
+     *
+     * This menu appears when you right-click on a form.
+     *
+     */
     QPoint globalPos = this->mapToGlobal(pos);
 
     QMenu myMenu;
@@ -87,6 +96,11 @@ void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
 
 MainWindow::~MainWindow()
 {
+    /*
+     *
+     * Remember layout information when you exit.
+     *
+     */
     config.Width = this->geometry().width();
     config.Height = this->geometry().height();
     config.PosX = this->geometry().x();
@@ -97,12 +111,17 @@ MainWindow::~MainWindow()
 
 /*
  *
- * MY FUNCTION
+ * <!-- Relating to Undu and Redue -->
  *
  */
 
 void MainWindow::PaintWatch()
 {
+    /*
+     *
+     * Monitors if the image has changed.
+     *
+     */
     if(scene->Drawing)
     {
         ImageBackup();
@@ -112,6 +131,11 @@ void MainWindow::PaintWatch()
 
 void MainWindow::ImageBackup()
 {
+    /*
+     *
+     * The changed image is saved as like a queue.
+     *
+     */
     if(!Cycle)
     {
         if(runUndo)
@@ -163,6 +187,7 @@ void MainWindow::ImageBackup()
         }
     }
 
+    //Created for testing.
     ui->l->setText(QString::number(ActivityCount));
     ui->l_2->setText(QString::number(StartPoint));
     ui->l_3->setText(QString::number(StopPoint));
@@ -171,6 +196,11 @@ void MainWindow::ImageBackup()
 
 void MainWindow::Undo()
 {
+    /*
+     *
+     * Import the old image from the backed up image.
+     *
+     */
     if(!runUndo)
     {
         nowPoint = StopPoint - 1;
@@ -214,6 +244,7 @@ void MainWindow::Undo()
 
     FindPen();
 
+    // Created for testing.
     ui->l->setText(QString::number(ActivityCount));
     ui->l_2->setText(QString::number(StartPoint));
     ui->l_3->setText(QString::number(StopPoint));
@@ -227,6 +258,12 @@ void MainWindow::Redo()
 
 void MainWindow::FindPen()
 {
+    /*
+     *
+     * Find the last pen that was used.
+     * This feature requires modification. (Not Working)
+     *
+     */
     if(ui->dotBtn->isChecked())
     {
         allCheckFalse();
@@ -253,8 +290,19 @@ void MainWindow::FindPen()
     }
 }
 
+/*
+ *
+ * <!-- End Relating to Undu and Redue -->
+ *
+ */
+
 void MainWindow::ThemeSelect(int arg1)
 {
+    /*
+     *
+     * Set the theme. We need to look for new ways to make modifications easier.
+     *
+     */
     switch (arg1) {
     case 1:
         this->setStyleSheet("QMainWindow { background:#444; } QMessageBox { background:#444; } QMessageBox QLabel { color: #fff; } QDialog { background: #333; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#444; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#222; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #333; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #666; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #333; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #666; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
@@ -284,6 +332,11 @@ void MainWindow::allCheckFalse()
 
 QPixmap MainWindow::scanImage()
 {
+    /*
+     *
+     * The layout was removed and added to store the displayed image in its best condition.
+     *
+     */
     int widthTemp, heightTemp;
     widthTemp = ui->graphicsView->geometry().width();
     heightTemp = ui->graphicsView->geometry().height();
@@ -410,24 +463,6 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
-void MainWindow::on_actionOption_triggered()
-{
-    Option op(*this, this);
-    op.exec();
-}
-
-void MainWindow::on_actionInfo_triggered()
-{
-    Infomation info(this);
-    info.exec();
-}
-
-/*
- *
- * BUTTON
- *
- */
-
 void MainWindow::on_zoomoutBtn_clicked(){
     ui->graphicsView->scale(0.8,0.8);
     scaleCount--;
@@ -438,79 +473,15 @@ void MainWindow::on_zoominBtn_clicked(){
     scaleCount++;
 }
 
-void MainWindow::on_cropBtn_clicked()
-{
-    if(OpenImage) {
-        allCheckFalse();
-        if(!Crop) {
-            Crop = true;
-            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
-            ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
-        }
-        else {
-            Crop = false;
-            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
-            ui->cropLabel->setStyleSheet("border: 0px solid red;");
-            ui->maskLabel->setGeometry(0,0,0,0);
-            ui->cropLabel->setGeometry(0,0,0,0);
-        }
-        ui->cropBtn->setChecked(Crop);
-    } else {
-        QMessageBox::information(this,"Notice","Please the image must be opened first.");
-    }
-}
-
-void MainWindow::on_dotBtn_clicked()
-{
-    if(OpenImage) {
-        allCheckFalse();
-        ui->dotBtn->setChecked(true);
-        scene->setDrawDot(true);
-    } else {
-        QMessageBox::information(this,"Notice","Please the image must be opened first.");
-    }
-
-}
-
-void MainWindow::on_lineBtn_clicked()
-{
-    if(OpenImage) {
-        allCheckFalse();
-        ui->lineBtn->setChecked(true);
-        scene->setDrawLine(true);
-    } else {
-        QMessageBox::information(this,"Notice","Please the image must be opened first.");
-    }
-
-}
-
-void MainWindow::on_squreBtn_clicked()
-{
-    if(OpenImage) {
-        allCheckFalse();
-        ui->squreBtn->setChecked(true);
-        scene->setDrawSqure(true);
-    } else {
-        QMessageBox::information(this,"Notice","Please the image must be opened first.");
-    }
-
-}
-
-void MainWindow::on_roundBtn_clicked()
-{
-    if(OpenImage) {
-        allCheckFalse();
-        ui->roundBtn->setChecked(true);
-        scene->setDrawRound(true);
-    } else {
-        QMessageBox::information(this,"Notice","Please the image must be opened first.");
-    }
-
-}
+/*
+ *
+ * <!-- End Relating to buttons (zoom, brush) -->
+ *
+ */
 
 /*
  *
- * RGB CHANGE
+ * <!-- Related to Image RGB control -->
  *
  */
 
@@ -585,7 +556,13 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
 
 /*
  *
- * HIS CHANGE
+ * <!-- End Related to Image RGB control -->
+ *
+ */
+
+/*
+ *
+ * <!-- Related to Image HIS control -->
  *
  */
 
@@ -700,10 +677,59 @@ void MainWindow::Image_Saturation_Change(int slider)
 
 /*
  *
- * PEN CUSTOM
+ * <!-- End Related to Image HIS control -->
  *
  */
 
+/*
+ *
+ * <!-- Related to pen settings -->
+ *
+ */
+
+void MainWindow::on_dotBtn_clicked()
+{
+    if(OpenImage) {
+        allCheckFalse();
+        ui->dotBtn->setChecked(true);
+        scene->setDrawDot(true);
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
+
+void MainWindow::on_lineBtn_clicked()
+{
+    if(OpenImage) {
+        allCheckFalse();
+        ui->lineBtn->setChecked(true);
+        scene->setDrawLine(true);
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
+
+void MainWindow::on_squreBtn_clicked()
+{
+    if(OpenImage) {
+        allCheckFalse();
+        ui->squreBtn->setChecked(true);
+        scene->setDrawSqure(true);
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
+
+void MainWindow::on_roundBtn_clicked()
+{
+    if(OpenImage) {
+        allCheckFalse();
+        ui->roundBtn->setChecked(true);
+        scene->setDrawRound(true);
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
 
 void MainWindow::setColorStyle(int slider_r, int slider_g, int slider_b)
 {
@@ -725,7 +751,13 @@ void MainWindow::on_penColor_clicked()
 
 /*
  *
- * IMAGE SIZE
+ * <!-- End Related to pen settings -->
+ *
+ */
+
+/*
+ *
+ * <!-- Related to image resize -->
  *
  */
 
@@ -759,9 +791,37 @@ void MainWindow::Image_Size_Change(int w, int h)
 
 /*
  *
- * EVENT
+ * <!-- End Related to image resize -->
  *
  */
+
+/*
+ *
+ * <!-- Relevant to image crop -->
+ *
+ */
+
+void MainWindow::on_cropBtn_clicked()
+{
+    if(OpenImage) {
+        allCheckFalse();
+        if(!Crop) {
+            Crop = true;
+            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0.5)");
+            ui->maskLabel->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
+        }
+        else {
+            Crop = false;
+            ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
+            ui->cropLabel->setStyleSheet("border: 0px solid red;");
+            ui->maskLabel->setGeometry(0,0,0,0);
+            ui->cropLabel->setGeometry(0,0,0,0);
+        }
+        ui->cropBtn->setChecked(Crop);
+    } else {
+        QMessageBox::information(this,"Notice","Please the image must be opened first.");
+    }
+}
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     if(Crop) {
@@ -814,6 +874,18 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
+/*
+ *
+ * <!-- End Relevant to image crop -->
+ *
+ */
+
+/*
+ *
+ * <!-- Relevant to reactive layouts -->
+ *
+ */
+
 void MainWindow::resizeEvent(QResizeEvent *event) {
     Q_UNUSED(event);
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
@@ -828,4 +900,28 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     ui->cropBtn->move(0,this->geometry().height()-50);
 
     ui->separator->setGeometry(0,0,this->geometry().width(),1);
+}
+
+/*
+ *
+ * <!-- End Relevant to reactive layouts -->
+ *
+ */
+
+/*
+ *
+ * <!-- Relating to other forms -->
+ *
+ */
+
+void MainWindow::on_actionOption_triggered()
+{
+    Option op(*this, this);
+    op.exec();
+}
+
+void MainWindow::on_actionInfo_triggered()
+{
+    Infomation info(this);
+    info.exec();
 }
