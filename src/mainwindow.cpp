@@ -111,7 +111,7 @@ MainWindow::~MainWindow()
 
 /*
  *
- * <!-- Relating to Undu and Redue -->
+ * <!-- Relating to Undu and Redu -->
  *
  */
 
@@ -292,7 +292,7 @@ void MainWindow::FindPen()
 
 /*
  *
- * <!-- End Relating to Undu and Redue -->
+ * <!-- End Relating to Undu and Redu -->
  *
  */
 
@@ -380,7 +380,7 @@ QPixmap MainWindow::scanImage()
 
 /*
  *
- * MENU OPTION
+ * <!-- Relating to save and load -->
  *
  */
 
@@ -463,6 +463,18 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
+/*
+ *
+ * <!-- End Relating to save and load -->
+ *
+ */
+
+/*
+ *
+ * <!-- Relating to zoom -->
+ *
+ */
+
 void MainWindow::on_zoomoutBtn_clicked(){
     ui->graphicsView->scale(0.8,0.8);
     scaleCount--;
@@ -475,7 +487,7 @@ void MainWindow::on_zoominBtn_clicked(){
 
 /*
  *
- * <!-- End Relating to buttons (zoom, brush) -->
+ * <!-- End Relating to zoom -->
  *
  */
 
