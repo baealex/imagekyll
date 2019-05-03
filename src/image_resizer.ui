@@ -39,7 +39,7 @@
     <string>Height :</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="apply_btn">
    <property name="geometry">
     <rect>
      <x>90</x>
@@ -52,7 +52,7 @@
     <string>Apply</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="cancel_btn">
    <property name="geometry">
     <rect>
      <x>160</x>

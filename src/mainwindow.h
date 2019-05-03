@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define UNDO_SIZE 10
-
 #include <QMainWindow>
 #include <QPixmap>
 #include <QPainter>
@@ -82,7 +80,7 @@ public:
          Width = in.readLine().toInt();
          Height = in.readLine().toInt();
          lastWorkDirectory = in.readLine();
-         UndoSize = in.readLine().toLong();
+         UndoSize = in.readLine().toLong() + 2;
 
          Theme = in.readLine().toInt();
          SaveAsk = in.readLine().toInt();

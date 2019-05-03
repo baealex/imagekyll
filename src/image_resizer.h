@@ -18,11 +18,11 @@ public:
     int gdc(int a, int b);
 
 private slots:
-    void on_pushButton_2_clicked();
-    void on_pushButton_clicked();
     void on_spinWidth_valueChanged(int arg1);
     void on_spinHeight_valueChanged(int arg1);
     void on_checkBox_stateChanged(int arg1);
+    void on_apply_btn_clicked();
+    void on_cancel_btn_clicked();
 
 private:
     Ui::image_resizer *ui;

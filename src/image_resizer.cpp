@@ -79,13 +79,13 @@ void image_resizer::on_checkBox_stateChanged(int arg1)
     }
 }
 
-void image_resizer::on_pushButton_clicked()
+void image_resizer::on_apply_btn_clicked()
 {
     mRef.Image_Size_Change(ui->spinWidth->text().toInt(),
                            ui->spinHeight->text().toInt());
 }
 
-void image_resizer::on_pushButton_2_clicked()
+void image_resizer::on_cancel_btn_clicked()
 {
     close();
 }

@@ -136,38 +136,19 @@ void MainWindow::ImageBackup()
      * The changed image is saved as like a queue.
      *
      */
-    if(!Cycle)
+    if(true)
     {
         if(runUndo)
         {
             ActivityCount = nowPoint + 2;
-            runUndo = false;
-        }
-        ActivityPixmap[ActivityCount] = scanImage();
-        ActivityCount++;
-
-        if(ActivityCount >= (int)config.UndoSize)
-        {
-            ActivityCount = 0;
-            StopPoint = (int)config.UndoSize - 1;
-            Cycle = true;
-        }
-        else
-        {
-            StartPoint = 0;
-            StopPoint = ActivityCount - 1;
-        }
-    }
-    else
-    {
-        if(runUndo)
-        {
-            ActivityCount = nowPoint + 2;
-            if(ActivityCount >= (int)config.UndoSize)
+            if(Cycle)
             {
-                ActivityCount = 0;
-                StartPoint = ActivityCount;
-                StopPoint = (int)config.UndoSize - 1;
+                if(ActivityCount >= (int)config.UndoSize)
+                {
+                    ActivityCount = 0;
+                    StartPoint = ActivityCount;
+                    StopPoint = (int)config.UndoSize - 1;
+                }
             }
             runUndo = false;
         }
@@ -177,13 +158,15 @@ void MainWindow::ImageBackup()
         if(ActivityCount >= (int)config.UndoSize)
         {
             ActivityCount = 0;
-            StartPoint = ActivityCount;
             StopPoint = (int)config.UndoSize - 1;
+            if(Cycle) StartPoint = ActivityCount;
+            else Cycle = true;
         }
         else
         {
-            StartPoint = ActivityCount;
-            StopPoint = ActivityCount - 1;
+            StartPoint = 0;
+            if(Cycle) StartPoint = ActivityCount;
+            else StopPoint = ActivityCount - 1;
         }
     }
 
