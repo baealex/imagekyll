@@ -1,9 +1,9 @@
-#include "rgb_changer.h"
-#include "ui_rgb_changer.h"
+#include "ColorChanger.h"
+#include "ui_color_changer.h"
 
 #include <QImage>
 
-rgb_changer::rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget *parent) :
+rgb_changer::rgb_changer(ImageEditor &ref, int Mode, int r, int g, int b, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::rgb_changer),
     mRef(ref),

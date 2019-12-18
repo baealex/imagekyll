@@ -1,7 +1,7 @@
-#include "image_resizer.h"
-#include "ui_image_resizer.h"
+#include "ImageResize.h"
+#include "ui_image_resize.h"
 
-image_resizer::image_resizer(MainWindow &ref, int w, int h, QWidget *parent) :
+image_resizer::image_resizer(ImageEditor &ref, int w, int h, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::image_resizer),
     mRef(ref)

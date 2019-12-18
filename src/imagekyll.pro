@@ -6,7 +6,7 @@
 
 QT       += core gui widgets
 
-TARGET = ImageEditor
+TARGET = imagekyll
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -24,28 +24,33 @@ RC_FILE = icon.rc
 CONFIG += c++11
 
 SOURCES += \
+        blogrepo.cpp \
+        color_changer.cpp \
+        config.cpp \
+        image_editor.cpp \
+        image_resize.cpp \
+        info_window.cpp \
         main.cpp \
-        mainwindow.cpp \
-    paintscene.cpp \
-    rgb_changer.cpp \
-    image_resizer.cpp \
-    option.cpp \
-    infomation.cpp
+        option.cpp \
+        paint_scene.cpp
 
 HEADERS += \
-        mainwindow.h \
-    paintscene.h \
-    rgb_changer.h \
-    image_resizer.h \
-    option.h \
-    infomation.h
+        BlogRepo.h \
+        ColorChanger.h \
+        Config.h \
+        ImageEditor.h \
+        ImageResize.h \
+        InfoWindow.h \
+        Option.h \
+        PaintScene.h
 
 FORMS += \
-        mainwindow.ui \
-    rgb_changer.ui \
-    image_resizer.ui \
-    option.ui \
-    infomation.ui
+        blogrepo.ui \
+        color_changer.ui \
+        image_editor.ui \
+        image_resize.ui \
+        info_window.ui \
+        option.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,4 +1,4 @@
-#include "paintscene.h"
+#include "PaintScene.h"
 
 paintScene::paintScene(QObject *parent) : QGraphicsScene(parent) {
     mPen.setCapStyle(Qt::RoundCap);

@@ -1,5 +1,5 @@
-#include "infomation.h"
-#include "ui_infomation.h"
+#include "InfoWindow.h"
+#include "ui_info_window.h"
 
 Infomation::Infomation(QWidget *parent) :
     QDialog(parent),

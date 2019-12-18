@@ -1,7 +1,7 @@
 #ifndef RGB_CHANGER_H
 #define RGB_CHANGER_H
 
-#include "mainwindow.h"
+#include "ImageEditor.h"
 #include <QDialog>
 
 namespace Ui {
@@ -13,7 +13,7 @@ class rgb_changer : public QDialog
     Q_OBJECT
 
 public:
-    explicit rgb_changer(MainWindow &ref, int Mode, int r, int g, int b, QWidget *parent = nullptr);
+    explicit rgb_changer(ImageEditor &ref, int Mode, int r, int g, int b, QWidget *parent = nullptr);
     ~rgb_changer();
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::rgb_changer *ui;
-    MainWindow &mRef;
+    ImageEditor &mRef;
     int ModeSelect;
     int rColor;
     int gColor;

@@ -1,7 +1,7 @@
 #ifndef OPTION_H
 #define OPTION_H
 
-#include "mainwindow.h"
+#include "ImageEditor.h"
 #include <QDialog>
 
 namespace Ui {
@@ -15,7 +15,7 @@ class Option : public QDialog
     int UndoSizeTemp;
 
 public:
-    explicit Option(MainWindow &ref, QWidget *parent = nullptr);
+    explicit Option(ImageEditor &ref, QWidget *parent = nullptr);
     ~Option();
 
 private slots:
@@ -31,7 +31,7 @@ private slots:
 
 private:
     Ui::Option *ui;
-    MainWindow &mRef;
+    ImageEditor &mRef;
 };
 
 #endif // OPTION_H

@@ -6,7 +6,7 @@
 
 "깃헙 블로그에 이미지 편집과 등록을 간편하게 하자!"는 취지에서 시작했지만 현재까지는 아직 이미지를 편집하는 기능을 구현하는 중에 있습니다. 최종적인 목표는 프로그램의 목적에 맞게 깃헙 블로그에 친화적으로 사용할 수 있는 이미지 편집 도구입니다.
 
-[다운로드](https://www.dropbox.com/sh/9ohue147wg19bfe/AACUQhTCeULfkpNuYi0hOBSda?dl=1) / [업데이트 내역](./changelog.md)
+[다운로드](https://www.dropbox.com/sh/9ohue147wg19bfe/AACUQhTCeULfkpNuYi0hOBSda?dl=1) / [업데이트 내역](./CHANGELOG.md)
 
 ## 상세 설명
 

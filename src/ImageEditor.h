@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef IMAGE_EDITOR_H
+#define IMAGE_EDITOR_H
 
 #include <QMainWindow>
 #include <QPixmap>
@@ -13,7 +13,7 @@
 #include <QScrollBar>
 #include <QTimer>
 
-#include "paintscene.h"
+#include "PaintScene.h"
 
 class UserConfig {
 private:
@@ -95,16 +95,16 @@ public:
 };
 
 namespace Ui {
-class MainWindow;
+class ImageEditor;
 }
 
-class MainWindow : public QMainWindow
+class ImageEditor : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit ImageEditor(QWidget *parent = nullptr);
+    ~ImageEditor();
     void allCheckFalse();
     void Image_Size_Change(int h, int w);
     void Image_RGB_Change(int slider_r, int slider_g, int slider_b);
@@ -121,7 +121,7 @@ public:
     void ImageBackup();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::ImageEditor *ui;
     QPixmap pixmap;
     paintScene *scene;
     int ScrollPos[2];
@@ -184,4 +184,4 @@ private slots:
     void on_actionHIS_triggered();
 };
 
-#endif // MAINWINDOW_H
+#endif // IMAGE_EDITOR_H

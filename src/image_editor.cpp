@@ -1,14 +1,14 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "ImageEditor.h"
+#include "ui_image_editor.h"
 
-#include "rgb_changer.h"
-#include "image_resizer.h"
-#include "option.h"
-#include "infomation.h"
+#include "ColorChanger.h"
+#include "ImageResize.h"
+#include "Option.h"
+#include "InfoWindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+ImageEditor::ImageEditor(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::ImageEditor)
 {
     ui->setupUi(this);
 
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     allCheckFalse();
 }
 
-void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
+void ImageEditor::ShowContextMenu(const QPoint& pos) // this is a slot
 {
     /*
      *
@@ -94,7 +94,7 @@ void MainWindow::ShowContextMenu(const QPoint& pos) // this is a slot
     Q_UNUSED(selectedItem);
 }
 
-MainWindow::~MainWindow()
+ImageEditor::~ImageEditor()
 {
     /*
      *
@@ -115,7 +115,7 @@ MainWindow::~MainWindow()
  *
  */
 
-void MainWindow::PaintWatch()
+void ImageEditor::PaintWatch()
 {
     /*
      *
@@ -129,7 +129,7 @@ void MainWindow::PaintWatch()
     }
 }
 
-void MainWindow::ImageBackup()
+void ImageEditor::ImageBackup()
 {
     /*
      *
@@ -177,7 +177,7 @@ void MainWindow::ImageBackup()
     ui->l_4->setText(QString::number(nowPoint));
 }
 
-void MainWindow::Undo()
+void ImageEditor::Undo()
 {
     /*
      *
@@ -234,12 +234,12 @@ void MainWindow::Undo()
     ui->l_4->setText(QString::number(nowPoint));
 }
 
-void MainWindow::Redo()
+void ImageEditor::Redo()
 {
 
 }
 
-void MainWindow::FindPen()
+void ImageEditor::FindPen()
 {
     /*
      *
@@ -279,7 +279,7 @@ void MainWindow::FindPen()
  *
  */
 
-void MainWindow::ThemeSelect(int arg1)
+void ImageEditor::ThemeSelect(int arg1)
 {
     /*
      *
@@ -300,7 +300,7 @@ void MainWindow::ThemeSelect(int arg1)
     config.Theme = arg1;
 }
 
-void MainWindow::allCheckFalse()
+void ImageEditor::allCheckFalse()
 {
     ui->dotBtn->setChecked(false);
     ui->lineBtn->setChecked(false);
@@ -313,7 +313,7 @@ void MainWindow::allCheckFalse()
     scene->setDrawRound(false);
 }
 
-QPixmap MainWindow::scanImage()
+QPixmap ImageEditor::scanImage()
 {
     /*
      *
@@ -367,7 +367,7 @@ QPixmap MainWindow::scanImage()
  *
  */
 
-void MainWindow::on_actionSave_triggered()
+void ImageEditor::on_actionSave_triggered()
 {
     if(OpenImage) {
         if(config.SaveAsk) {
@@ -390,7 +390,7 @@ void MainWindow::on_actionSave_triggered()
     }
 }
 
-void MainWindow::on_actionSave_as_triggered()
+void ImageEditor::on_actionSave_as_triggered()
 {
     if(OpenImage) {
         QPixmap savePixmap = scanImage();
@@ -400,7 +400,7 @@ void MainWindow::on_actionSave_as_triggered()
     }
 }
 
-void MainWindow::on_actionOpen_triggered()
+void ImageEditor::on_actionOpen_triggered()
 {
     if(OpenImage && scene->runEdit)
     {
@@ -458,12 +458,12 @@ void MainWindow::on_actionOpen_triggered()
  *
  */
 
-void MainWindow::on_zoomoutBtn_clicked(){
+void ImageEditor::on_zoomoutBtn_clicked(){
     ui->graphicsView->scale(0.8,0.8);
     scaleCount--;
 }
 
-void MainWindow::on_zoominBtn_clicked(){
+void ImageEditor::on_zoominBtn_clicked(){
     ui->graphicsView->scale(1.25,1.25);
     scaleCount++;
 }
@@ -480,7 +480,7 @@ void MainWindow::on_zoominBtn_clicked(){
  *
  */
 
-void MainWindow::on_actionRGB_triggered()
+void ImageEditor::on_actionRGB_triggered()
 {
     if(OpenImage) {
         rgb_changer rgb(*this, 0, imgRed, imgGreen, imgBlue, this);
@@ -490,7 +490,7 @@ void MainWindow::on_actionRGB_triggered()
     }
 }
 
-void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
+void ImageEditor::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
 {
     scene->runEdit = true;
     imgRed = slider_r; imgGreen = slider_g; imgBlue = slider_b;
@@ -521,7 +521,7 @@ void MainWindow::Image_RGB_Change(int slider_r, int slider_g, int slider_b)
     ImageBackup();
 }
 
-void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
+void ImageEditor::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider_b)
 {
     int pre = 1;
     if(config.PreviewSize < pixmap.size().height()) pre = pixmap.size().height()/config.PreviewSize;
@@ -561,7 +561,7 @@ void MainWindow::Image_RGB_Preview_Change(int slider_r, int slider_g, int slider
  *
  */
 
-void MainWindow::on_actionHIS_triggered()
+void ImageEditor::on_actionHIS_triggered()
 {
     if(OpenImage) {
         rgb_changer his(*this, 2, imgRed, imgGreen, imgBlue, this);
@@ -571,7 +571,7 @@ void MainWindow::on_actionHIS_triggered()
     }
 }
 
-void MainWindow::Image_Hue_Change(int slider)
+void ImageEditor::Image_Hue_Change(int slider)
 {
     scene->runEdit = true;
     QImage image = pixmap.toImage();
@@ -615,7 +615,7 @@ void MainWindow::Image_Hue_Change(int slider)
     ImageBackup();
 }
 
-void MainWindow::Image_Intensity_Change(int slider)
+void ImageEditor::Image_Intensity_Change(int slider)
 {
     scene->runEdit = true;
     QImage image = pixmap.toImage();
@@ -641,7 +641,7 @@ void MainWindow::Image_Intensity_Change(int slider)
     ImageBackup();
 }
 
-void MainWindow::Image_Saturation_Change(int slider)
+void ImageEditor::Image_Saturation_Change(int slider)
 {
     scene->runEdit = true;
     QImage image = pixmap.toImage();
@@ -682,7 +682,7 @@ void MainWindow::Image_Saturation_Change(int slider)
  *
  */
 
-void MainWindow::on_dotBtn_clicked()
+void ImageEditor::on_dotBtn_clicked()
 {
     if(OpenImage) {
         allCheckFalse();
@@ -693,7 +693,7 @@ void MainWindow::on_dotBtn_clicked()
     }
 }
 
-void MainWindow::on_lineBtn_clicked()
+void ImageEditor::on_lineBtn_clicked()
 {
     if(OpenImage) {
         allCheckFalse();
@@ -704,7 +704,7 @@ void MainWindow::on_lineBtn_clicked()
     }
 }
 
-void MainWindow::on_squreBtn_clicked()
+void ImageEditor::on_squreBtn_clicked()
 {
     if(OpenImage) {
         allCheckFalse();
@@ -715,7 +715,7 @@ void MainWindow::on_squreBtn_clicked()
     }
 }
 
-void MainWindow::on_roundBtn_clicked()
+void ImageEditor::on_roundBtn_clicked()
 {
     if(OpenImage) {
         allCheckFalse();
@@ -726,19 +726,19 @@ void MainWindow::on_roundBtn_clicked()
     }
 }
 
-void MainWindow::setColorStyle(int slider_r, int slider_g, int slider_b)
+void ImageEditor::setColorStyle(int slider_r, int slider_g, int slider_b)
 {
     penRed = slider_r; penGreen = slider_g; penBlue = slider_b;
     ui->penColor->setStyleSheet("background:rgb("+QString::number(slider_r)+","+QString::number(slider_g)+","+QString::number(slider_b)+")");
     scene->setColor(slider_r,slider_g,slider_b);
 }
 
-void MainWindow::on_penSize_valueChanged(int arg1)
+void ImageEditor::on_penSize_valueChanged(int arg1)
 {
     scene->setPenSize(arg1);
 }
 
-void MainWindow::on_penColor_clicked()
+void ImageEditor::on_penColor_clicked()
 {
     rgb_changer rgb(*this, 1, penRed, penGreen, penBlue, this);
     rgb.exec();
@@ -756,7 +756,7 @@ void MainWindow::on_penColor_clicked()
  *
  */
 
-void MainWindow::on_actionResizing_triggered()
+void ImageEditor::on_actionResizing_triggered()
 {
     if(OpenImage) {
         image_resizer resizer(*this, pixmap.width(), pixmap.height(), this);
@@ -766,7 +766,7 @@ void MainWindow::on_actionResizing_triggered()
     }
 }
 
-void MainWindow::Image_Size_Change(int w, int h)
+void ImageEditor::Image_Size_Change(int w, int h)
 {
     pixmap = scanImage();
     pixmap = pixmap.scaled(w,h);
@@ -796,7 +796,7 @@ void MainWindow::Image_Size_Change(int w, int h)
  *
  */
 
-void MainWindow::on_cropBtn_clicked()
+void ImageEditor::on_cropBtn_clicked()
 {
     if(OpenImage) {
         allCheckFalse();
@@ -818,7 +818,7 @@ void MainWindow::on_cropBtn_clicked()
     }
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event) {
+void ImageEditor::mousePressEvent(QMouseEvent *event) {
     if(Crop) {
         previousPoint = event->localPos();
         previousPoint.setY(previousPoint.y()-ui->menuBar->height());
@@ -828,7 +828,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
     }
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+void ImageEditor::mouseMoveEvent(QMouseEvent *event) {
     if(Crop) {
         lastPoint = event->localPos()-previousPoint;
         lastPoint.setY(lastPoint.y()-ui->menuBar->height());
@@ -837,7 +837,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+void ImageEditor::mouseReleaseEvent(QMouseEvent *event) {
     if(Crop) {
         ui->maskLabel->setStyleSheet("background:rgba(255,255,255,0)");
         ui->cropLabel->setStyleSheet("border: 0px solid red;");
@@ -881,7 +881,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
  *
  */
 
-void MainWindow::resizeEvent(QResizeEvent *event) {
+void ImageEditor::resizeEvent(QResizeEvent *event) {
     Q_UNUSED(event);
     ui->graphicsView->setGeometry(ui->graphicsView->geometry().x(),ui->graphicsView->geometry().y(),this->geometry().width()-ui->graphicsView->geometry().x(),this->geometry().height()-ui->graphicsView->geometry().y()-20);
 
@@ -909,13 +909,13 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
  *
  */
 
-void MainWindow::on_actionOption_triggered()
+void ImageEditor::on_actionOption_triggered()
 {
     Option op(*this, this);
     op.exec();
 }
 
-void MainWindow::on_actionInfo_triggered()
+void ImageEditor::on_actionInfo_triggered()
 {
     Infomation info(this);
     info.exec();

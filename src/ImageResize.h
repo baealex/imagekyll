@@ -1,7 +1,7 @@
 #ifndef IMAGE_RESIZER_H
 #define IMAGE_RESIZER_H
 
-#include "mainwindow.h"
+#include "ImageEditor.h"
 #include <QDialog>
 
 namespace Ui {
@@ -13,7 +13,7 @@ class image_resizer : public QDialog
     Q_OBJECT
 
 public:
-    explicit image_resizer(MainWindow &ref, int w = 1, int h = 1, QWidget *parent = nullptr);
+    explicit image_resizer(ImageEditor &ref, int w = 1, int h = 1, QWidget *parent = nullptr);
     ~image_resizer();
     int gdc(int a, int b);
 
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::image_resizer *ui;
-    MainWindow &mRef;
+    ImageEditor &mRef;
     int __Width = 0, __Height = 0;
     int mWidth = 0, mHeight = 0;
     bool checkRatio = false, changeValue = false;

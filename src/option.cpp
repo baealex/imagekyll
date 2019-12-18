@@ -1,7 +1,7 @@
-#include "option.h"
+#include "Option.h"
 #include "ui_option.h"
 
-Option::Option(MainWindow &ref, QWidget *parent) :
+Option::Option(ImageEditor &ref, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Option),
     mRef(ref)
