@@ -24,32 +24,32 @@ RC_FILE = icon.rc
 CONFIG += c++11
 
 SOURCES += \
-        blogrepo.cpp \
         color_changer.cpp \
-        config.cpp \
+        conf_module.cpp \
         image_editor.cpp \
         image_resize.cpp \
         info_window.cpp \
+        jekyll_repo.cpp \
         main.cpp \
         option.cpp \
         paint_scene.cpp
 
 HEADERS += \
-        BlogRepo.h \
         ColorChanger.h \
         Config.h \
         ImageEditor.h \
         ImageResize.h \
         InfoWindow.h \
+        JekyllRepo.h \
         Option.h \
         PaintScene.h
 
 FORMS += \
-        blogrepo.ui \
         color_changer.ui \
         image_editor.ui \
         image_resize.ui \
         info_window.ui \
+        jekyll_repo.ui \
         option.ui
 
 # Default rules for deployment.

@@ -103,7 +103,7 @@ class ImageEditor : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit ImageEditor(QWidget *parent = nullptr);
+    explicit ImageEditor(QString file, QWidget *parent = nullptr);
     ~ImageEditor();
     void allCheckFalse();
     void Image_Size_Change(int h, int w);
@@ -119,6 +119,7 @@ public:
     QPixmap scanImage();
     UserConfig config;
     void ImageBackup();
+    void openImage(QString file);
 
 private:
     Ui::ImageEditor *ui;
