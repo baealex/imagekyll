@@ -6,7 +6,7 @@
 #include "Option.h"
 #include "InfoWindow.h"
 
-ImageEditor::ImageEditor(QWidget *parent) :
+ImageEditor::ImageEditor(QString file, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::ImageEditor)
 {
@@ -50,8 +50,6 @@ ImageEditor::ImageEditor(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::Key_Minus + Qt::SHIFT), this, SLOT(on_zoomoutBtn_clicked()));
     new QShortcut(QKeySequence(Qt::Key_Plus), this, SLOT(on_zoominBtn_clicked()));
 
-
-
     timer->start();
     timer->setInterval(10);
     connect(timer,SIGNAL(timeout()),this,SLOT(PaintWatch()));
@@ -64,6 +62,7 @@ ImageEditor::ImageEditor(QWidget *parent) :
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     allCheckFalse();
+    openImage(file);
 }
 
 void ImageEditor::ShowContextMenu(const QPoint& pos) // this is a slot
@@ -281,22 +280,6 @@ void ImageEditor::FindPen()
 
 void ImageEditor::ThemeSelect(int arg1)
 {
-    /*
-     *
-     * Set the theme. We need to look for new ways to make modifications easier.
-     *
-     */
-    switch (arg1) {
-    case 1:
-        this->setStyleSheet("QMainWindow { background:#444; } QMessageBox { background:#444; } QMessageBox QLabel { color: #fff; } QDialog { background: #333; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#444; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#222; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #333; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #666; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #555; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #333; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #666; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #555; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
-        break;
-    case 2:
-        this->setStyleSheet("QMainWindow { background:#fff; } QMessageBox { background:#fff; } QMessageBox QLabel { color: #000; } QDialog { background: #fff; } QDialog QLabel{ color:#000; } QDialog QCheckBox{ color:#000; } QSlider::handle:horizontal { background: #000; border: 1px solid #c5c5c5; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#fff; color:#000; } QMenuBar::item:selected { background: #eee; } QMenuBar::item:pressed { background: #ccc; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#eee; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#666; } QPushButton:pressed { color:#000; } QPushButton:checked { color:#000; } QScrollBar:horizontal { border: 0px solid darkgrey; background: #ccc; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #fff; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid darkgrey; background: #aaa; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid darkgrey; background: #ccc; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #fff; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid darkgrey; background: #aaa; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
-        break;
-    case 3:
-        this->setStyleSheet("QMainWindow { background:#400071; } QMessageBox { background:#400071; } QMessageBox QLabel { color: #fff; } QDialog { background: #400071; } QDialog QLabel{ color:#fff; } QDialog QCheckBox{ color:#fff; } QSlider::handle:horizontal { background: #fff; border: 1px solid #5c5c5c; width: 18px; margin: -2px 0; border-radius: 3px; } QMenuBar { background:#400071; color:#fff; } QMenuBar::item:selected { background: #555; } QMenuBar::item:pressed { background: #777; } QMenu { color: #fff; background-color: #333; border: 1px solid black; } QMenu::item { background-color: transparent; } QMenu::item:selected { background-color: #555; } QGraphicsView { background:#300060; border:0px; } QSpinBox { background:#222; color:#fff; } QSpinBox::down-button { subcontrol-origin: border; } QPushButton { background:rgba(0,0,0,.0); color:#aaa; font-weight:bold; text-align:center; } QPushButton:hover { color:#ccc; } QPushButton:pressed { color:#fff; } QPushButton:checked { color:#fff; } QScrollBar:horizontal { border: 0px solid grey; background: #510082; height: 15px; margin: 0px 22px 0 22px; } QScrollBar::handle:horizontal { background: #7300a4; min-width: 20px; } QScrollBar::add-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: right; subcontrol-origin: margin; } QScrollBar::sub-line:horizontal { border: 0px solid grey; background: #510082; width: 20px; subcontrol-position: left; subcontrol-origin: margin; } QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background: none; } QScrollBar:vertical { border: 0px solid grey; background: #510082; width: 15px; margin: 22px 0 22px 0; } QScrollBar::handle:vertical { background: #7300a4; min-height: 20px; } QScrollBar::add-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: bottom; subcontrol-origin: margin; } QScrollBar::sub-line:vertical { border: 0px solid grey; background: #510082; height: 20px; subcontrol-position: top; subcontrol-origin: margin; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }");
-        break;
-    }
     config.Theme = arg1;
 }
 
@@ -446,6 +429,30 @@ void ImageEditor::on_actionOpen_triggered()
     }
 }
 
+void ImageEditor::openImage(QString file)
+{
+    OpenImage = true;
+    pixmap.load(file);
+
+    scene = new paintScene(this);
+    ui->graphicsView->setScene(scene);
+
+    scene->setPenSize(ui->penSize->value());
+    scene->setColor(penRed, penGreen, penBlue);
+    allCheckFalse();
+
+    imgRed = 1;
+    imgGreen = 1;
+    imgBlue = 1;
+
+    item = new QGraphicsPixmapItem(pixmap);
+    scene->addItem(item);
+
+    scene->runEdit = false;
+
+    ImageBackup();
+}
+
 /*
  *
  * <!-- End Relating to save and load -->
@@ -459,12 +466,12 @@ void ImageEditor::on_actionOpen_triggered()
  */
 
 void ImageEditor::on_zoomoutBtn_clicked(){
-    ui->graphicsView->scale(0.8,0.8);
+    ui->graphicsView->scale(0.8, 0.8);
     scaleCount--;
 }
 
 void ImageEditor::on_zoominBtn_clicked(){
-    ui->graphicsView->scale(1.25,1.25);
+    ui->graphicsView->scale(1.25, 1.25);
     scaleCount++;
 }
 
