@@ -56,3 +56,15 @@ QStringList RepoConfig::parse()
 }
 
 /* ================================================= */
+
+QString Parser::extParse(QString param)
+{
+    QStringList paramLists = param.split('.');
+    return paramLists[paramLists.length() - 1];
+}
+
+QString Parser::nameParse(QString param)
+{
+    QStringList paramLists = param.split('/');
+    return paramLists[paramLists.length() - 1].split('.')[0];
+}

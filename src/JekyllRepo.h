@@ -12,6 +12,7 @@
 
 #include "Config.h"
 #include "ImageEditor.h"
+#include "ImageCompressor.h"
 
 namespace Ui {
 class JekyllRepo;
@@ -27,6 +28,7 @@ public:
     QString createTodayDirectory();
     bool isJekyll(QString dirName);
     bool isOverlab(QString dirName);
+    void update();
     ~JekyllRepo();
 
 private slots:
@@ -34,6 +36,7 @@ private slots:
     void on_appendRopoButton_clicked();
     void on_openImageEditor_clicked();
     void on_listWidget_itemSelectionChanged();
+    void on_openImageCompressor_clicked();
 
 protected:
     void dragEnterEvent(QDragEnterEvent* event);

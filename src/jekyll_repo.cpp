@@ -44,10 +44,40 @@ void JekyllRepo::on_appendRopoButton_clicked()
     else QMessageBox::information(this, tr("Notify"), tr("Cannot find '_config.yml'."));
 }
 
+void JekyllRepo::update()
+{
+    QListWidgetItem *selectedItem = ui->listWidget->currentItem();
+    ui->listWidget->setItemSelected(selectedItem, false);
+    ui->listWidget->setItemSelected(selectedItem, true);
+}
+
 void JekyllRepo::on_openImageEditor_clicked()
 {
     ImageEditor *editor = new ImageEditor(ui->listWidget->currentItem()->text(), this);
     editor->show();
+    update();
+}
+
+void JekyllRepo::on_openImageCompressor_clicked()
+{
+    QString nowFile = ui->listWidget->currentItem()->text();
+    QString ext = Parser::extParse(nowFile).toLower();
+
+    if(ext == "jpg")
+    {
+
+    }
+    else if(ext == "png")
+    {
+        QMessageBox::information(this, tr("Notify"), tr("Compression is possible but may damage the image."));
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Notify"), tr("is not allow ext"));
+    }
+    ImageCompressor compressor(ui->listWidget->currentItem()->text(), this);
+    compressor.exec();
+    update();
 }
 
 void JekyllRepo::createRepoButton(QString dirName)
@@ -129,6 +159,8 @@ void JekyllRepo::on_listWidget_itemSelectionChanged()
 
     ui->imagePreview->setPixmap(QPixmap(fileFullPath).scaled(
         ui->imagePreview->width(), ui->imagePreview->height(), Qt::KeepAspectRatio));
+
+    ui->imageSize->setText(QString::number((double)QFile(fileFullPath).size()/1048576, 'f', 2) + "MB");
 }
 
 bool JekyllRepo::isOverlab(QString dirName)
@@ -153,22 +185,14 @@ void JekyllRepo::dropEvent(QDropEvent* event)
         QList<QUrl> paths = mimeData->urls();
         foreach(QUrl path, paths)
         {
-            QStringList nameParser = path.toLocalFile().split('/');
-            QString fileName = nameParser[nameParser.length() - 1].split('.')[0];
-            fileName = fileName.replace(' ', '-');
-
-            QStringList extParser = path.toLocalFile().split('.');
-            QString ext = extParser[extParser.length() - 1];
-            fileName = fileName.replace("." + ext, "");
-            ext = ext.toLower();
+            QString ext = Parser::extParse(path.toLocalFile()).toLower();
+            QString fileName = Parser::nameParse(path.toLocalFile()).replace(' ', '-').replace("." + ext, "");
 
             if(ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "gif" || ext == "mp4")
             {
                 ConfModule module("counter");
                 QString copyPath = createTodayDirectory() + "/" + fileName + "." + ext;
-                QFile::copy(
-                    path.toLocalFile(),
-                    copyPath);
+                QFile::copy(path.toLocalFile(), copyPath);
                 ui->listWidget->addItem(copyPath);
             }
             else QMessageBox::information(this, tr("Notify"), tr("is not allow ext"));

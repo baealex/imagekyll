@@ -28,6 +28,7 @@ SOURCES += \
         conf_module.cpp \
         image_editor.cpp \
         image_resize.cpp \
+        imagecompressor.cpp \
         info_window.cpp \
         jekyll_repo.cpp \
         main.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 HEADERS += \
         ColorChanger.h \
         Config.h \
+        ImageCompressor.h \
         ImageEditor.h \
         ImageResize.h \
         InfoWindow.h \
@@ -48,6 +50,7 @@ FORMS += \
         color_changer.ui \
         image_editor.ui \
         image_resize.ui \
+        imagecompressor.ui \
         info_window.ui \
         jekyll_repo.ui \
         option.ui

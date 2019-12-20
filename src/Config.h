@@ -14,6 +14,13 @@ public:
     ~ConfModule();
 };
 
+class Parser {
+public:
+    QString static safe(QString param);
+    QString static extParse(QString param);
+    QString static nameParse(QString param);
+};
+
 class RepoConfig {
     QString fileName;
     ConfModule *module;
