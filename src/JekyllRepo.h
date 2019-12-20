@@ -24,6 +24,7 @@ class JekyllRepo : public QMainWindow
 public:
     explicit JekyllRepo(QWidget *parent = nullptr);
     void createRepoButton(QString dirName);
+    QString createTodayDirectory();
     bool isJekyll(QString dirName);
     bool isOverlab(QString dirName);
     ~JekyllRepo();

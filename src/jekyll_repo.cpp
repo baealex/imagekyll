@@ -17,10 +17,13 @@ JekyllRepo::JekyllRepo(QWidget *parent) :
     ui->appendRopoButton->setText(tr("Append Blog Repo"));
 
     QStringList repoLists = repoConfig.parse();
-    for(int i = 0; i < repoLists.length(); i++)
+    if(repoLists.length() > 0)
     {
-        createRepoButton(repoLists[i]);
-        nextButtonPos[Y] += 60;
+        for(int i = 0; i < repoLists.length(); i++)
+        {
+            createRepoButton(repoLists[i]);
+            nextButtonPos[Y] += 60;
+        }
     }
 }
 
@@ -56,6 +59,42 @@ void JekyllRepo::createRepoButton(QString dirName)
     QObject::connect(newButton, SIGNAL(clicked()), this, SLOT(repoOpen()));
 }
 
+QString JekyllRepo::createTodayDirectory()
+{
+    QDir dir(seletedPath);
+    if(dir.isEmpty()) {
+        dir.mkpath("assets");
+    }
+    dir.setPath(dir.path() + "/assets");
+    if(dir.isEmpty()) {
+        dir.mkpath("images");
+    }
+
+    QDate now     = QDate::currentDate();
+    QString year  = QString::number(now.year());
+    QString month = QString::number(now.month());
+    QString day   = QString::number(now.day());
+
+    dir.setPath(dir.path() + "/images");
+    if(dir.isEmpty()) {
+        dir.mkpath("posts");
+    }
+    dir.setPath(dir.path() + "/posts");
+    if(dir.isEmpty()) {
+        dir.mkpath(year);
+    }
+    dir.setPath(dir.path() + "/" + year);
+    if(dir.isEmpty()) {
+        dir.mkpath(month);
+    }
+    dir.setPath(dir.path() + "/" + month);
+    if(dir.isEmpty()) {
+        dir.mkpath(day);
+    }
+    dir.setPath(dir.path() + "/" + day);
+    return dir.path();
+}
+
 void JekyllRepo::repoOpen()
 {
     setAcceptDrops(true);
@@ -87,6 +126,9 @@ void JekyllRepo::on_listWidget_itemSelectionChanged()
     QString fileFullPath = ui->listWidget->currentItem()->text();
     QString jekyllPath = "{{ site.image }}" + fileFullPath.split("images")[1];
     ui->fileLink->setText(jekyllPath);
+
+    ui->imagePreview->setPixmap(QPixmap(fileFullPath).scaled(
+        ui->imagePreview->width(), ui->imagePreview->height(), Qt::KeepAspectRatio));
 }
 
 bool JekyllRepo::isOverlab(QString dirName)
@@ -111,18 +153,25 @@ void JekyllRepo::dropEvent(QDropEvent* event)
         QList<QUrl> paths = mimeData->urls();
         foreach(QUrl path, paths)
         {
+            QStringList nameParser = path.toLocalFile().split('/');
+            QString fileName = nameParser[nameParser.length() - 1].split('.')[0];
+            fileName = fileName.replace(' ', '-');
+
             QStringList extParser = path.toLocalFile().split('.');
             QString ext = extParser[extParser.length() - 1];
+            fileName = fileName.replace("." + ext, "");
             ext = ext.toLower();
+
             if(ext == "jpg" || ext == "jpeg" || ext == "png" || ext == "gif" || ext == "mp4")
             {
-                QDate nowDate = QDate::currentDate();
+                ConfModule module("counter");
+                QString copyPath = createTodayDirectory() + "/" + fileName + "." + ext;
                 QFile::copy(
                     path.toLocalFile(),
-                    seletedPath + "/assets/images/" + QString::number(nowDate.year()) + "/" + QString::number(nowDate.day()) + "1");
-                path.toLocalFile();
+                    copyPath);
+                ui->listWidget->addItem(copyPath);
             }
-            else QMessageBox::information(this, "Notify", "is not allow ext");
+            else QMessageBox::information(this, tr("Notify"), tr("is not allow ext"));
         }
     }
 }
